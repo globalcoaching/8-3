@@ -254,20 +254,20 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
   box-shadow:0 0 8px rgba(168,85,247,.6);
 }
 
-/* Swipe text hint instead of circles */
+/* Swipe text hint - bottom right */
 .swipe-arrow{
-  position:absolute;bottom:44px;left:0;right:0;
-  display:flex;align-items:center;justify-content:center;gap:6px;
-  z-index:12;pointer-events:none;
+  position:absolute;bottom:10px;right:14px;
+  display:flex;align-items:center;gap:4px;
+  z-index:16;pointer-events:none;
   opacity:1;transition:opacity .3s;
 }
 .swipe-arrow span{
-  font-size:11px;letter-spacing:2px;
+  font-size:10px;letter-spacing:1.5px;
   color:rgba(168,85,247,.5);font-weight:600;
   text-transform:uppercase;
 }
 .arrow-icon{
-  font-size:14px;color:rgba(192,132,252,.6);
+  font-size:13px;color:rgba(192,132,252,.6);
   animation:arrowBounce 1.4s ease-in-out 1.2s 5;
 }
 @keyframes arrowBounce{
