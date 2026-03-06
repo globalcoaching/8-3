@@ -2,515 +2,495 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
-<title>✨ 8/3 — Tìm tên của bạn!</title>
-<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Be+Vietnam+Pro:ital,wght@0,400;0,600;0,700;1,400&family=DM+Serif+Display:ital@0;1&family=Pacifico&display=swap" rel="stylesheet"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<title>8/3 — Tìm tên của bạn</title>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,600;0,700;1,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
-html,body{width:100%;overflow-x:hidden;}
-body{font-family:'Be Vietnam Pro',sans-serif;background:#0a0612;}
+html{scroll-behavior:smooth;}
+body{font-family:'Be Vietnam Pro',sans-serif;background:#c06888;min-height:100vh;overflow-x:hidden;}
 
-/* ════════════════════════════════════════════════
-   PAGE 1 — INTRO
-════════════════════════════════════════════════ */
-
-/* Petals falling */
-.petal{position:absolute;pointer-events:none;font-size:18px;
-  animation:petalFall linear infinite;opacity:.7;}
-@keyframes petalFall{
-  0%{transform:translateY(-40px) rotate(0deg);opacity:.8;}
-  100%{transform:translateY(110vh) rotate(360deg);opacity:0;}
-}
-
-/* Envelope */
-.env-wrap{
-  position:relative;width:min(260px,70vw);
-  animation:envFloat 3s ease-in-out infinite;
-  cursor:pointer;margin-bottom:24px;
-}
-@keyframes envFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-14px);}}
-
-.envelope{
-  width:100%;aspect-ratio:3/2;
-  background:linear-gradient(135deg,#e8405a,#c0294a);
-  border-radius:8px;
-  position:relative;overflow:visible;
-  box-shadow:0 8px 32px rgba(200,40,80,.4);
-}
-.envelope::before{/* flap */
-  content:'';position:absolute;top:0;left:0;right:0;
-  height:55%;
-  background:linear-gradient(135deg,#f06070,#d8304e);
-  clip-path:polygon(0 0,100% 0,50% 100%);
-  border-radius:8px 8px 0 0;
-  transform-origin:top;
-  transition:transform .6s ease;
-  z-index:2;
-}
-.env-wrap.open .envelope::before{transform:rotateX(-180deg);}
-.env-card{
-  position:absolute;inset:8%;
-  background:#fffafc;border-radius:6px;
-  display:flex;align-items:center;justify-content:center;
-  font-family:'Pacifico',cursive;font-size:clamp(11px,3vw,16px);
-  color:#c0294a;text-align:center;line-height:1.4;
-  z-index:1;
-  box-shadow:0 2px 8px rgba(0,0,0,.15);
-  padding:8px;
-}
-.env-hearts{
-  position:absolute;top:-20px;left:50%;transform:translateX(-50%);
-  display:flex;gap:8px;z-index:3;
-}
-.env-heart{
-  font-size:16px;
-  animation:heartPop 1.2s ease-in-out infinite;
-}
-.env-heart:nth-child(2){animation-delay:.2s;}
-.env-heart:nth-child(3){animation-delay:.4s;}
-@keyframes heartPop{0%,100%{transform:scale(1);}50%{transform:scale(1.3);}}
-
-/* Letter */
-#letter-box{
-  background:rgba(255,255,255,.88);
-  backdrop-filter:blur(12px);
-  border-radius:20px;
-  padding:28px 28px 24px;
-  max-width:520px;width:100%;
-  box-shadow:0 8px 40px rgba(200,60,100,.2);
-  border:1px solid rgba(255,255,255,.6);
-  text-align:center;
-  display:none;
-  animation:letterAppear .6s ease;
-}
-@keyframes letterAppear{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
-#letter-box .lt-header{
-  font-family:'Dancing Script',cursive;
-  font-size:clamp(28px,6vw,40px);
-  color:#c0294a;font-weight:700;margin-bottom:12px;
-}
-#letter-box .lt-body{
-  font-size:clamp(13px,2.5vw,15px);
-  color:#5a2030;line-height:1.8;text-align:left;
-}
-#letter-box .lt-sign{
-  margin-top:16px;
-  font-family:'Dancing Script',cursive;
-  font-size:18px;color:#c0294a;text-align:right;
-}
-
-/* CTA Button */
-.btn-next{
-  margin-top:20px;
-  padding:14px 36px;
-  background:linear-gradient(135deg,#e8405a,#ff7090);
-  border:none;border-radius:99px;
-  color:#fff;font-size:16px;
-  font-family:'Be Vietnam Pro',sans-serif;font-weight:700;
-  cursor:pointer;letter-spacing:.5px;
-  box-shadow:0 4px 20px rgba(220,60,90,.5);
-  transition:transform .2s,box-shadow .2s;
-  animation:btnPulse 2s ease-in-out infinite;
-}
-.btn-next:hover{transform:scale(1.06);}
-@keyframes btnPulse{0%,100%{box-shadow:0 4px 20px rgba(220,60,90,.5);}50%{box-shadow:0 4px 32px rgba(220,60,90,.8);}}
-.btn-tap{
-  padding:12px 28px;
-  background:linear-gradient(135deg,#e8405a,#ff7090);
-  border:none;border-radius:99px;
-  color:#fff;font-size:14px;font-family:'Be Vietnam Pro',sans-serif;font-weight:700;
-  cursor:pointer;box-shadow:0 4px 16px rgba(220,60,90,.4);
-  transition:transform .2s;display:none;
-}
-.btn-tap:hover{transform:scale(1.05);}
-
-/* ════════════════════════════════════════════════
-   PAGE 2 — WALL
-════════════════════════════════════════════════ */
-#page-wall{
-  display:none;
-  min-height:100vh;
-  position:relative;
-}
-
-/* Background */
-#page-wall::before{
+/* ── BACKGROUND ── */
+body::before{
   content:'';position:fixed;inset:0;z-index:0;
-  background:
-    /* sunset sky gradient */
-    linear-gradient(180deg,
-      #b06090 0%,
-      #d4708a 15%,
-      #e89060 30%,
-      #f0a855 45%,
-      #e8906a 60%,
-      #d07888 75%,
-      #c06888 100%
-    );
+  background:linear-gradient(180deg,
+    #b06090 0%,#d4708a 12%,#e89060 28%,
+    #f0a855 44%,#e8906a 58%,#d07888 76%,#c06888 100%);
 }
-/* Decorative overlay for depth */
-#page-wall::after{
+body::after{
   content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
   background:
-    radial-gradient(ellipse at 10% 90%,rgba(180,40,80,.35) 0%,transparent 40%),
-    radial-gradient(ellipse at 90% 85%,rgba(160,60,40,.3) 0%,transparent 40%),
-    radial-gradient(ellipse at 50% 110%,rgba(80,20,40,.4) 0%,transparent 50%);
+    radial-gradient(ellipse at 10% 90%,rgba(160,30,70,.3) 0%,transparent 42%),
+    radial-gradient(ellipse at 90% 85%,rgba(140,50,30,.25) 0%,transparent 42%),
+    radial-gradient(ellipse at 50% 0%,rgba(255,200,220,.15) 0%,transparent 50%);
 }
 
-/* Decorative birds */
-.deco-bird{
-  position:fixed;pointer-events:none;z-index:1;
-  font-size:clamp(40px,6vw,90px);
-  opacity:.85;filter:drop-shadow(2px 4px 8px rgba(0,0,0,.2));
-}
-.deco-bird.left{left:-1%;top:12%;transform:scaleX(-1);}
-.deco-bird.right{right:-1%;top:10%;}
-
-/* Decorative flowers */
-.deco-flower{
-  position:fixed;pointer-events:none;z-index:1;
-  font-size:clamp(50px,8vw,110px);opacity:.9;
-  filter:drop-shadow(0 4px 12px rgba(0,0,0,.2));
-}
-.deco-flower.fl{bottom:0;left:-1%;}
-.deco-flower.fr{bottom:0;right:-1%;}
-
-/* Fairy lights */
-#lights{position:fixed;top:0;left:0;right:0;height:48px;z-index:10;pointer-events:none;}
-.wire{position:absolute;top:14px;left:-5px;right:-5px;height:2px;
-  background:linear-gradient(90deg,transparent,rgba(80,40,20,.6) 8%,rgba(60,30,10,.7) 92%,transparent);}
-.bulb{position:absolute;width:9px;height:11px;border-radius:50% 50% 42% 42%;top:10px;
-  transform:translateX(-50%);animation:blink var(--d,2s) ease-in-out infinite var(--dl,0s);
+/* ── FAIRY LIGHTS ── */
+#lights{position:fixed;top:0;left:0;right:0;height:44px;z-index:10;pointer-events:none;}
+.wire{position:absolute;top:12px;left:-5px;right:-5px;height:2px;
+  background:linear-gradient(90deg,transparent,rgba(60,20,0,.55) 8%,rgba(40,15,0,.65) 92%,transparent);}
+.bulb{position:absolute;width:9px;height:11px;border-radius:50% 50% 42% 42%;top:9px;
+  transform:translateX(-50%);
+  animation:blink var(--d,2s) ease-in-out infinite var(--dl,0s);
   box-shadow:0 0 8px var(--c),0 0 18px var(--c);}
 .bulb::before{content:'';position:absolute;top:-4px;left:50%;transform:translateX(-50%);
-  width:4px;height:5px;background:rgba(60,30,10,.8);border-radius:2px 2px 0 0;}
-@keyframes blink{0%,100%{opacity:.3;transform:translateX(-50%) scale(1);}50%{opacity:1;transform:translateX(-50%) scale(1.2);}}
-
-/* Header */
-#header{
-  position:relative;z-index:10;text-align:center;
-  padding:64px 20px 12px;
+  width:4px;height:5px;background:rgba(50,20,5,.8);border-radius:2px 2px 0 0;}
+@keyframes blink{
+  0%,100%{opacity:.25;transform:translateX(-50%) scale(1);}
+  50%{opacity:1;transform:translateX(-50%) scale(1.15);}
 }
+
+/* ── DECO birds & flowers ── */
+.deco-bird{position:fixed;pointer-events:none;z-index:2;
+  font-size:clamp(48px,7vw,100px);opacity:.88;
+  filter:drop-shadow(2px 6px 10px rgba(0,0,0,.25));}
+.deco-bird.left{left:-1%;top:10%;transform:scaleX(-1);}
+.deco-bird.right{right:-1%;top:8%;}
+.deco-flower{position:fixed;pointer-events:none;z-index:2;
+  font-size:clamp(56px,9vw,120px);opacity:.9;
+  filter:drop-shadow(0 4px 12px rgba(0,0,0,.2));}
+.deco-flower.fl{bottom:-4px;left:-2%;}
+.deco-flower.fr{bottom:-4px;right:-2%;}
+
+/* ── HEADER ── */
+#header{position:relative;z-index:10;text-align:center;padding:58px 20px 10px;}
 #header h1{
   font-family:'Dancing Script',cursive;
-  font-size:clamp(40px,8vw,80px);
-  color:#fff;
-  font-weight:700;
-  text-shadow:0 2px 20px rgba(180,40,80,.6),0 0 60px rgba(255,150,180,.4);
-  line-height:1.1;
+  font-size:clamp(52px,10vw,110px);
+  color:#fff;font-weight:700;line-height:1.05;
+  text-shadow:0 3px 24px rgba(160,30,70,.55),0 0 70px rgba(255,140,170,.35);
 }
 #header h1 em{color:#ffd0e0;font-style:italic;}
 .sub{
-  margin-top:4px;
-  font-size:clamp(10px,1.8vw,13px);
-  color:rgba(255,220,230,.7);
-  letter-spacing:3px;text-transform:uppercase;
+  margin-top:3px;
+  font-size:clamp(9px,1.4vw,11px);
+  color:rgba(255,220,230,.65);letter-spacing:4px;text-transform:uppercase;
 }
 .instr{
   display:inline-block;margin-top:10px;
-  background:rgba(255,255,255,.15);
-  border:1px solid rgba(255,255,255,.3);
-  backdrop-filter:blur(8px);
-  border-radius:99px;padding:8px 22px;
-  font-size:clamp(11px,2vw,14px);color:#fff;letter-spacing:.5px;
-  text-shadow:0 1px 4px rgba(0,0,0,.2);
+  background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);
+  backdrop-filter:blur(8px);border-radius:99px;padding:7px 20px;
+  font-size:clamp(11px,1.8vw,13px);color:#fff;letter-spacing:.4px;
 }
-#prog{margin-top:8px;font-size:12px;color:rgba(255,220,230,.6);}
+#prog{margin-top:7px;font-size:11px;color:rgba(255,215,225,.55);}
 #prog span{color:#fff;font-weight:700;}
 
 /* ── WALL ── */
-#wall{position:relative;z-index:10;max-width:1400px;margin:0 auto;padding:8px 20px 80px;}
+#wall{position:relative;z-index:10;max-width:1400px;margin:0 auto;padding:4px 18px 90px;}
 
-.cl-row{position:relative;margin-bottom:44px;}
-.cl-row::before{content:'';position:absolute;top:6px;left:-8px;right:-8px;height:2px;
-  background:linear-gradient(90deg,transparent,rgba(80,30,10,.5) 8%,rgba(60,20,8,.65) 92%,transparent);}
-.row-cards{display:grid;grid-template-columns:repeat(var(--cols,7),1fr);gap:12px;padding-top:20px;}
+.cl-row{position:relative;margin-bottom:40px;}
+.cl-row::before{
+  content:'';position:absolute;top:4px;left:-10px;right:-10px;height:2px;
+  background:linear-gradient(90deg,transparent,rgba(70,20,5,.45) 8%,rgba(50,15,3,.6) 92%,transparent);
+}
+.row-cards{
+  display:grid;
+  grid-template-columns:repeat(var(--cols,7),1fr);
+  gap:12px;padding-top:18px;
+}
 
 /* ── CARD ── */
-.cw{position:relative;cursor:pointer;transition:transform .25s ease;}
-.cw:hover{transform:translateY(-6px) scale(1.05);}
-.cw:hover .card{box-shadow:0 12px 40px rgba(200,60,80,.5),0 4px 12px rgba(0,0,0,.4);}
+.cw{position:relative;cursor:pointer;transition:transform .22s ease;}
+.cw:hover{transform:translateY(-7px) scale(1.06);}
+.cw:hover .card{box-shadow:0 14px 44px rgba(190,50,70,.55),0 4px 14px rgba(0,0,0,.45);}
 
 /* Clothespin */
-.cw::before{content:'';position:absolute;top:-13px;left:50%;transform:translateX(-50%);
-  width:8px;height:16px;background:linear-gradient(180deg,#9b7520,#6b4f10);
-  border-radius:3px 3px 2px 2px;box-shadow:1px 1px 3px rgba(0,0,0,.5);z-index:5;}
-.cw::after{content:'';position:absolute;top:-5px;left:50%;transform:translateX(-50%);
-  width:12px;height:4px;background:#b08828;border-radius:3px;z-index:6;}
+.cw::before{
+  content:'';position:absolute;top:-14px;left:50%;transform:translateX(-50%);
+  width:8px;height:17px;
+  background:linear-gradient(180deg,#a07c22,#6b4f10);
+  border-radius:3px 3px 2px 2px;box-shadow:1px 1px 4px rgba(0,0,0,.55);z-index:5;
+}
+.cw::after{
+  content:'';position:absolute;top:-5px;left:50%;transform:translateX(-50%);
+  width:13px;height:4px;background:#b89030;border-radius:3px;z-index:6;
+}
 
 .card{
   width:100%;border-radius:10px;overflow:hidden;
-  box-shadow:3px 5px 20px rgba(0,0,0,.4);
-  border:2px solid rgba(255,220,180,.5);
-  animation:sway var(--sw,3s) ease-in-out infinite var(--sd,0s);
+  box-shadow:3px 6px 22px rgba(0,0,0,.42);
+  border:2px solid rgba(255,220,175,.45);
+  animation:sway var(--sw,3.2s) ease-in-out infinite var(--sd,0s);
   transform-origin:top center;
   display:flex;flex-direction:column;
   min-height:140px;
-  background:linear-gradient(160deg,var(--c1,#fff8f0),var(--c2,#ffecd8));
+  background:linear-gradient(155deg,var(--c1,#fff9f0),var(--c2,#ffead8));
+  transition:border-color .3s;
 }
-@keyframes sway{0%,100%{transform:rotate(var(--ra,-3deg));}50%{transform:rotate(var(--rb,3deg));}}
-.cw:hover .card{animation:none;}
-
-.card-photo{display:none;}
+@keyframes sway{
+  0%,100%{transform:rotate(var(--ra,-2.5deg));}
+  50%{transform:rotate(var(--rb,2.5deg));}
+}
+.cw:hover .card{animation:none;transform:rotate(0);}
+.cw.opened .card{
+  border-color:rgba(210,80,110,.5);
+  background:linear-gradient(155deg,#fff0f5,#ffd8ea);
+}
 
 .card-label{
-  flex:1;padding:14px 10px 12px;
-  text-align:center;
-  display:flex;flex-direction:column;gap:6px;align-items:center;justify-content:center;
+  flex:1;padding:13px 8px 11px;text-align:center;
+  display:flex;flex-direction:column;gap:5px;
+  align-items:center;justify-content:center;
 }
 .card-name{
   font-family:'Dancing Script',cursive;
-  font-size:clamp(16px,1.4vw,22px);
-  font-weight:700;color:#6b1a2a;line-height:1.2;
+  font-size:clamp(15px,1.35vw,21px);
+  font-weight:700;color:#6b1a2a;line-height:1.15;
 }
 .card-zodiac{
-  font-size:clamp(9px,.85vw,11px);color:#8b3a4a;font-weight:700;
-  background:rgba(200,80,100,.12);
-  border:1px solid rgba(200,80,100,.25);
-  border-radius:99px;padding:2px 9px;white-space:nowrap;
+  font-size:clamp(8px,.8vw,10px);color:#8b3a4a;font-weight:700;
+  background:rgba(200,75,95,.1);border:1px solid rgba(200,75,95,.22);
+  border-radius:99px;padding:2px 8px;white-space:nowrap;
 }
 .card-tap{
-  font-size:9px;color:#a05060;font-weight:700;letter-spacing:.8px;
-  text-transform:uppercase;
-  animation:tapP 1.4s ease-in-out infinite;
+  font-size:8px;color:#a05060;font-weight:700;
+  letter-spacing:.8px;text-transform:uppercase;
+  animation:tapP 1.6s ease-in-out infinite;
 }
-@keyframes tapP{0%,100%{opacity:.5;}50%{opacity:1;}}
-.cw.opened .card{border-color:rgba(200,80,100,.4);}
-.cw.opened .card-label{background:linear-gradient(160deg,#ffe8f0,#ffd8e8);}
+@keyframes tapP{0%,100%{opacity:.45;}50%{opacity:1;}}
 
-/* ════════════════════════════════════════════════
+/* Card open burst effect */
+@keyframes cardBurst{
+  0%{transform:scale(1);}
+  30%{transform:scale(1.12);}
+  60%{transform:scale(.97);}
+  100%{transform:scale(1);}
+}
+.cw.just-opened .card{animation:cardBurst .5s ease forwards;}
+
+/* ════════════════════════════════════════
    MODAL — 3 SLIDES
-════════════════════════════════════════════════ */
+════════════════════════════════════════ */
 #modal{
   position:fixed;inset:0;z-index:5000;
-  background:rgba(5,2,14,0);backdrop-filter:blur(0px);
+  background:rgba(4,1,12,0);backdrop-filter:blur(0px);
   display:flex;align-items:center;justify-content:center;
-  pointer-events:none;
+  pointer-events:none;padding:10px;
   transition:background .35s ease,backdrop-filter .35s ease;
-  padding:12px;
 }
-#modal.show{background:rgba(5,2,14,.88);backdrop-filter:blur(22px);pointer-events:all;}
+#modal.show{
+  background:rgba(4,1,12,.9);backdrop-filter:blur(24px);
+  pointer-events:all;
+}
 
 .mc{
-  width:min(94vw,400px);
-  max-height:94vh;
-  border-radius:22px;
-  overflow:hidden;
-  box-shadow:0 0 80px rgba(200,80,120,.5),0 24px 60px rgba(0,0,0,.7);
-  transform:scale(.72) translateY(50px);opacity:0;
-  transition:transform .45s cubic-bezier(.34,1.5,.64,1),opacity .35s ease;
+  width:min(96vw,390px);
+  max-height:92vh;
+  border-radius:22px;overflow:hidden;
+  box-shadow:0 0 90px rgba(210,80,130,.5),0 28px 64px rgba(0,0,0,.75);
+  transform:scale(.68) translateY(60px) rotate(-2deg);opacity:0;
+  transition:transform .48s cubic-bezier(.34,1.56,.64,1),opacity .36s ease;
   position:relative;display:flex;flex-direction:column;
 }
-#modal.show .mc{transform:scale(1) translateY(0);opacity:1;}
+#modal.show .mc{transform:scale(1) translateY(0) rotate(0deg);opacity:1;}
 
 /* Slide track */
-.mc-slides{display:flex;width:300%;flex:1;min-height:0;
-  transition:transform .42s cubic-bezier(.4,0,.2,1);}
+.mc-slides{
+  display:flex;width:300%;flex:1;min-height:0;
+  transition:transform .42s cubic-bezier(.4,0,.2,1);
+}
 .mc-slide{width:33.333%;flex-shrink:0;display:flex;flex-direction:column;overflow:hidden;}
 
-/* Close */
+/* Close btn */
 .mc-close{
   position:absolute;top:10px;right:10px;z-index:20;
   width:30px;height:30px;border-radius:50%;
-  background:rgba(0,0,0,.2);border:none;
-  color:#fff;font-size:14px;cursor:pointer;
+  background:rgba(0,0,0,.22);border:none;color:#fff;
+  font-size:14px;cursor:pointer;
   display:flex;align-items:center;justify-content:center;
   transition:background .2s,transform .2s;backdrop-filter:blur(4px);
 }
-.mc-close:hover{background:rgba(0,0,0,.4);transform:rotate(90deg);}
+.mc-close:hover{background:rgba(0,0,0,.42);transform:rotate(90deg);}
 
-/* SLIDE 1 — Photo + Message */
+/* ── Slide 1: Photo + Message ── */
 .mc-photo{
-  width:100%;aspect-ratio:3/4;flex-shrink:0;position:relative;overflow:hidden;
+  width:100%;aspect-ratio:3/4;flex-shrink:0;
+  position:relative;overflow:hidden;
   background:linear-gradient(135deg,#fde8f0,#f9c8dc);
-  max-height:50vh;
+  max-height:52vh;
 }
-.mc-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center center;display:block;}
-.mc-photo .mcp-ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:64px;}
+.mc-photo img{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;object-position:center top;display:block;
+}
+.mcp-ph{
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:60px;
+  background:linear-gradient(135deg,var(--pc1,#fde8f0),var(--pc2,#f9c8dc));
+}
 
 .mc-info{
-  flex:1;padding:18px 20px 14px;
-  display:flex;flex-direction:column;gap:9px;overflow:hidden;
-  background:linear-gradient(160deg,#fff8fc,#ffeef5);
+  flex:1;padding:16px 20px 12px;
+  display:flex;flex-direction:column;gap:8px;overflow:hidden;
+  background:linear-gradient(160deg,#fffafc,#ffeef6);
   position:relative;
 }
-.mc-info::after{content:'✿';position:absolute;bottom:-8px;right:12px;
-  font-size:70px;color:rgba(200,80,120,.06);pointer-events:none;}
-.mc-date{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#d09090;font-weight:600;}
-.mc-name{font-family:'Dancing Script',cursive;font-size:clamp(26px,6vw,36px);font-weight:700;color:#6b1a2a;line-height:1.1;}
-.mc-div{width:40px;height:3px;background:linear-gradient(90deg,#e84070,#ff9090);border-radius:99px;}
-.mc-msg{font-size:clamp(12px,2.5vw,14px);color:#7a2035;line-height:1.7;font-style:italic;}
-.mc-fl{font-size:20px;}
+.mc-info::after{
+  content:'✿';position:absolute;bottom:-12px;right:10px;
+  font-size:72px;color:rgba(210,80,120,.05);pointer-events:none;
+}
+.mc-date{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#c898a8;font-weight:600;}
+.mc-name{
+  font-family:'Dancing Script',cursive;
+  font-size:clamp(24px,6vw,34px);font-weight:700;color:#6b1a2a;line-height:1.1;
+}
+.mc-div{width:38px;height:3px;background:linear-gradient(90deg,#e84070,#ff9898);border-radius:99px;}
+.mc-msg{
+  font-size:clamp(11px,2.2vw,13px);color:#7a2035;
+  line-height:1.7;font-style:italic;font-weight:400;
+}
 
-/* SLIDE 2 — Quote */
+/* ── Slide 2: Quote ── */
 .mc-quote-slide{
   flex:1;display:flex;flex-direction:column;
   align-items:center;justify-content:center;
-  padding:32px 24px 48px;
-  background:linear-gradient(160deg,#0d0820,#1a0838,#0d0820);
-  position:relative;overflow:hidden;gap:16px;text-align:center;
+  padding:30px 22px 46px;gap:14px;
+  background:linear-gradient(160deg,#0c0718,#190736,#0c0718);
+  position:relative;overflow:hidden;text-align:center;
 }
 .mc-quote-slide::before{
   content:'';position:absolute;inset:0;pointer-events:none;
-  background:radial-gradient(ellipse at 25% 35%,rgba(200,80,140,.25) 0%,transparent 55%),
-    radial-gradient(ellipse at 75% 65%,rgba(200,60,80,.18) 0%,transparent 55%);
+  background:
+    radial-gradient(ellipse at 22% 32%,rgba(200,80,140,.28) 0%,transparent 52%),
+    radial-gradient(ellipse at 78% 68%,rgba(190,55,75,.2) 0%,transparent 52%);
 }
-.q-label{font-size:9px;letter-spacing:5px;text-transform:uppercase;
-  color:rgba(255,180,200,.45);font-weight:700;position:relative;z-index:1;}
-.q-emoji-big{font-size:36px;position:relative;z-index:1;animation:floatE 3s ease-in-out infinite;}
-@keyframes floatE{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
-.q-open,.q-close-quote{font-size:52px;color:rgba(200,100,140,.2);line-height:0;
-  position:relative;z-index:1;}
-.q-open{align-self:flex-start;margin-bottom:-8px;}
-.q-close-quote{align-self:flex-end;margin-top:-8px;}
-.q-text{font-size:clamp(13px,3vw,16px);color:#e8d5f0;line-height:1.85;
-  font-style:italic;position:relative;z-index:1;max-width:300px;}
-.q-name{font-family:'Dancing Script',cursive;font-size:20px;font-weight:700;
-  color:#e090b0;position:relative;z-index:1;}
-.q-star{position:absolute;border-radius:50%;background:#fff;pointer-events:none;
-  animation:twk var(--d,2s) ease-in-out infinite var(--dl,0s);}
-@keyframes twk{0%,100%{opacity:.07;}50%{opacity:.6;}}
+.q-label{
+  font-size:8px;letter-spacing:5px;text-transform:uppercase;
+  color:rgba(255,175,200,.4);font-weight:700;position:relative;z-index:1;
+}
+.q-emoji-big{
+  font-size:34px;position:relative;z-index:1;
+  animation:floatE 3.2s ease-in-out infinite;
+}
+@keyframes floatE{0%,100%{transform:translateY(0);}50%{transform:translateY(-9px);}}
+.q-open,.q-close-quote{
+  font-size:48px;color:rgba(200,100,140,.18);
+  line-height:0;position:relative;z-index:1;
+}
+.q-open{align-self:flex-start;margin-bottom:-6px;}
+.q-close-quote{align-self:flex-end;margin-top:-6px;}
+.q-text{
+  font-size:clamp(12px,2.8vw,15px);color:#ead4f0;
+  line-height:1.9;font-style:italic;
+  position:relative;z-index:1;max-width:295px;
+}
+.q-name{
+  font-family:'Dancing Script',cursive;
+  font-size:19px;font-weight:700;color:#e08ab2;
+  position:relative;z-index:1;
+}
+.q-star{
+  position:absolute;border-radius:50%;background:#fff;pointer-events:none;
+  animation:twk var(--d,2s) ease-in-out infinite var(--dl,0s);
+}
+@keyframes twk{0%,100%{opacity:.06;}50%{opacity:.55;}}
 
-/* SLIDE 3 — Gift */
+/* ── Slide 3: Gift ── */
 .mc-gift-slide{
   flex:1;display:flex;flex-direction:column;
   align-items:center;justify-content:center;
-  padding:28px 22px 48px;gap:16px;
-  background:linear-gradient(160deg,#fff0f5,#ffe0ee,#fff8fc);
+  padding:24px 20px 46px;gap:14px;
+  background:linear-gradient(160deg,#fff0f5,#ffdcea,#fff8fc);
   position:relative;overflow:hidden;text-align:center;
 }
 .mc-gift-slide::before{
   content:'';position:absolute;inset:0;pointer-events:none;
-  background:radial-gradient(ellipse at 50% 20%,rgba(220,100,140,.12) 0%,transparent 60%);
+  background:radial-gradient(ellipse at 50% 15%,rgba(225,95,140,.13) 0%,transparent 58%);
 }
-.gift-label{font-size:9px;letter-spacing:5px;text-transform:uppercase;
-  color:rgba(180,80,100,.5);font-weight:700;position:relative;z-index:1;}
+.gift-label{
+  font-size:8px;letter-spacing:5px;text-transform:uppercase;
+  color:rgba(170,65,90,.5);font-weight:700;position:relative;z-index:1;
+}
+/* Gift photo frame — matches photo slide proportions */
 .gift-photo{
-  width:min(75%,200px);
-  aspect-ratio:1/1;
-  border-radius:16px;
-  overflow:hidden;
+  width:min(72%,190px);
+  aspect-ratio:3/4;
+  border-radius:14px;overflow:hidden;
   position:relative;z-index:1;
-  background:linear-gradient(135deg,#fde8f0,#f9c8dc);
-  box-shadow:0 8px 24px rgba(200,60,100,.2);
-  border:2px solid rgba(220,100,140,.2);
+  background:linear-gradient(135deg,var(--pc1,#fde8f0),var(--pc2,#f9c8dc));
+  box-shadow:0 10px 28px rgba(200,55,95,.22),0 2px 8px rgba(0,0,0,.1);
+  border:2px solid rgba(220,95,130,.18);
   display:flex;align-items:center;justify-content:center;
-  font-size:52px;
+  font-size:48px;
 }
-.gift-photo img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;}
-.gift-name-label{font-size:10px;letter-spacing:2px;color:rgba(160,60,80,.6);text-transform:uppercase;position:relative;z-index:1;font-weight:600;}
+.gift-photo img{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;object-position:center center;display:block;
+}
+.gift-ph-emoji{
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;font-size:48px;
+}
+.gift-sublabel{
+  font-size:9px;letter-spacing:2px;text-transform:uppercase;
+  color:rgba(150,55,75,.55);position:relative;z-index:1;font-weight:600;
+  margin-bottom:-6px;
+}
 .gift-item-name{
   font-family:'Dancing Script',cursive;
-  font-size:clamp(22px,5vw,30px);font-weight:700;color:#7a1a30;
+  font-size:clamp(20px,5vw,28px);font-weight:700;color:#6b1220;
   position:relative;z-index:1;line-height:1.2;
 }
-.gift-person{font-family:'Dancing Script',cursive;font-size:16px;color:#b06070;position:relative;z-index:1;}
-/* Sparkles in gift slide */
-.g-spark{position:absolute;pointer-events:none;font-size:12px;
-  animation:sparkle var(--d,2s) ease-in-out infinite var(--dl,0s);opacity:0;}
-@keyframes sparkle{0%,100%{opacity:0;transform:scale(.5);}50%{opacity:.8;transform:scale(1.2);}}
-
-/* ── DOTS ── */
-.mc-bottom{
-  position:absolute;bottom:0;left:0;right:0;height:38px;
-  display:flex;align-items:center;justify-content:center;gap:8px;z-index:15;
-  background:linear-gradient(transparent,rgba(0,0,0,.06));pointer-events:none;
+.gift-person{
+  font-family:'Dancing Script',cursive;
+  font-size:15px;color:#a85568;position:relative;z-index:1;
 }
-.mc-dot{width:9px;height:9px;border-radius:50%;
-  background:rgba(200,80,120,.2);border:2px solid rgba(200,80,120,.35);
-  transition:all .35s cubic-bezier(.4,0,.2,1);cursor:pointer;pointer-events:all;padding:0;}
-.mc-dot.active{width:26px;border-radius:99px;
-  background:linear-gradient(90deg,#e84070,#ff8090);border-color:transparent;
-  box-shadow:0 0 8px rgba(220,60,90,.5);}
+.g-spark{
+  position:absolute;pointer-events:none;font-size:11px;
+  animation:gspk var(--d,2s) ease-in-out infinite var(--dl,0s);opacity:0;
+}
+@keyframes gspk{0%,100%{opacity:0;transform:scale(.4) rotate(0deg);}50%{opacity:.9;transform:scale(1.1) rotate(20deg);}}
+
+/* ── Dots ── */
+.mc-bottom{
+  position:absolute;bottom:0;left:0;right:0;height:36px;
+  display:flex;align-items:center;justify-content:center;gap:7px;
+  z-index:15;pointer-events:none;
+  background:linear-gradient(transparent,rgba(0,0,0,.07));
+}
+.mc-dot{
+  width:8px;height:8px;border-radius:50%;
+  background:rgba(200,75,115,.18);border:2px solid rgba(200,75,115,.32);
+  transition:all .32s cubic-bezier(.4,0,.2,1);
+  cursor:pointer;pointer-events:all;padding:0;
+}
+.mc-dot.active{
+  width:24px;border-radius:99px;
+  background:linear-gradient(90deg,#e84070,#ff8898);
+  border-color:transparent;
+  box-shadow:0 0 8px rgba(220,55,85,.48);
+}
 
 /* Swipe hint */
 .swipe-arrow{
-  position:absolute;bottom:10px;right:14px;
+  position:absolute;bottom:9px;right:13px;
   display:flex;align-items:center;gap:4px;
   z-index:16;pointer-events:none;opacity:1;transition:opacity .3s;
 }
-.swipe-arrow span{font-size:9px;letter-spacing:1.5px;color:rgba(200,80,120,.5);
-  font-weight:700;text-transform:uppercase;}
-.arrow-icon{font-size:12px;color:rgba(220,100,140,.6);
-  animation:arrowB 1.4s ease-in-out 1.2s 5;}
-@keyframes arrowB{0%,100%{transform:translateX(0);opacity:.6;}50%{transform:translateX(5px);opacity:1;}}
+.swipe-arrow span{font-size:8px;letter-spacing:1.5px;color:rgba(200,75,115,.48);font-weight:700;text-transform:uppercase;}
+.arr-ico{font-size:11px;color:rgba(220,95,135,.55);animation:arrB 1.5s ease-in-out 1.5s 5;}
+@keyframes arrB{0%,100%{transform:translateX(0);opacity:.55;}50%{transform:translateX(5px);opacity:1;}}
 
-/* ════════════════════════════════════════════════
+/* ════════════════════════════════════════
    CONFETTI + DONE
-════════════════════════════════════════════════ */
+════════════════════════════════════════ */
 #confetti{position:fixed;inset:0;pointer-events:none;z-index:6000;}
-
-#done{display:none;position:fixed;inset:0;z-index:7000;
-  background:rgba(5,2,14,.92);backdrop-filter:blur(20px);
-  align-items:center;justify-content:center;flex-direction:column;gap:16px;text-align:center;padding:20px;}
+#done{
+  display:none;position:fixed;inset:0;z-index:7000;
+  background:rgba(4,1,12,.93);backdrop-filter:blur(20px);
+  align-items:center;justify-content:center;
+  flex-direction:column;gap:16px;text-align:center;padding:24px;
+}
 #done.show{display:flex;animation:fi .8s ease;}
 @keyframes fi{from{opacity:0;}to{opacity:1;}}
-#done h2{font-family:'DM Serif Display',serif;font-size:clamp(26px,5vw,52px);
-  color:#fde8f0;text-shadow:0 0 40px rgba(220,100,140,.6);}
-#done h2 em{color:#ffb0c8;}
-#done p{font-size:14px;color:#d090a8;letter-spacing:2px;}
-#done button{margin-top:8px;padding:12px 32px;
-  background:linear-gradient(135deg,#e84070,#ff9090);border:none;border-radius:99px;
+#done h2{
+  font-family:'DM Serif Display',serif;
+  font-size:clamp(28px,5vw,54px);
+  color:#fde8f0;text-shadow:0 0 44px rgba(220,95,140,.6);
+}
+#done h2 em{color:#ffb5ca;}
+#done p{font-size:13px;color:#cc8aa8;letter-spacing:2px;}
+#done button{
+  margin-top:8px;padding:12px 32px;
+  background:linear-gradient(135deg,#e84070,#ff9090);
+  border:none;border-radius:99px;
   color:#fff;font-size:14px;font-family:'Be Vietnam Pro',sans-serif;font-weight:700;
-  cursor:pointer;letter-spacing:1px;transition:transform .2s;}
-#done button:hover{transform:scale(1.06);}
+  cursor:pointer;letter-spacing:1px;transition:transform .2s;
+}
+#done button:hover{transform:scale(1.07);}
 
-/* ════════════════════════════════════════════════
+/* ════════════════════════════════════════
    RESPONSIVE
-════════════════════════════════════════════════ */
+════════════════════════════════════════ */
+
+/* Mobile ≤ 480px */
 @media(max-width:480px){
-  #header{padding:54px 14px 10px;}
-  #header h1{font-size:36px;}
-  .sub{font-size:9px;letter-spacing:2px;}
-  .instr{font-size:11px;padding:7px 14px;}
-  #wall{padding:6px 10px 60px;}
-  .cl-row{margin-bottom:32px;}
-  .row-cards{grid-template-columns:repeat(4,1fr)!important;gap:8px;padding-top:16px;}
-  .card{min-height:90px;border-radius:7px;}
-  .card-label{padding:9px 5px 9px;gap:4px;}
-  .card-name{font-size:13px;}
-  .card-zodiac{font-size:8px;padding:2px 6px;}
-  .card-tap{font-size:8px;}
+  #header{padding:48px 12px 8px;}
+  #header h1{font-size:clamp(38px,11vw,52px);}
+  .sub{font-size:8px;letter-spacing:3px;}
+  .instr{font-size:10px;padding:6px 14px;}
+  #prog{font-size:10px;}
+
+  #wall{padding:4px 8px 70px;}
+  .cl-row{margin-bottom:28px;}
+  .row-cards{
+    grid-template-columns:repeat(4,1fr)!important;
+    gap:7px;padding-top:14px;
+  }
+  .card{min-height:82px;border-radius:7px;}
+  .card-label{padding:8px 4px;gap:4px;}
+  .card-name{font-size:clamp(12px,3.5vw,15px);}
+  .card-zodiac{font-size:7px;padding:1px 5px;}
+  .card-tap{font-size:7px;}
   .cw::before{width:6px;height:13px;top:-10px;}
-  .cw::after{width:10px;height:4px;top:-4px;}
-  .deco-bird{font-size:36px;}
-  .deco-flower{font-size:44px;}
+  .cw::after{width:10px;height:3px;top:-4px;}
+
+  .deco-bird{font-size:30px;top:8%;}
+  .deco-flower{font-size:40px;}
+
+  /* Modal full-width on mobile */
+  .mc{width:96vw;border-radius:18px;}
+  .mc-photo{max-height:44vh;}
+  .mc-quote-slide{padding:24px 18px 40px;gap:11px;}
+  .q-text{font-size:13px;}
+  .mc-gift-slide{padding:20px 18px 40px;gap:11px;}
+  .gift-photo{width:min(65%,160px);}
 }
+
+/* Small mobile ≤ 360px — 3 columns */
+@media(max-width:360px){
+  .row-cards{
+    grid-template-columns:repeat(3,1fr)!important;
+    gap:6px;
+  }
+  .card-name{font-size:12px;}
+}
+
+/* Tablet 481–768px */
 @media(min-width:481px) and (max-width:768px){
-  #header h1{font-size:44px;}
-  #wall{padding:8px 14px 70px;}
-  .row-cards{grid-template-columns:repeat(4,1fr)!important;gap:10px;}
+  #header h1{font-size:clamp(44px,9vw,64px);}
+  #wall{padding:4px 12px 72px;}
+  .row-cards{
+    grid-template-columns:repeat(4,1fr)!important;
+    gap:10px;
+  }
   .card{min-height:110px;}
-  .deco-bird{font-size:52px;}
-  .deco-flower{font-size:64px;}
+  .deco-bird{font-size:44px;}
+  .deco-flower{font-size:60px;}
+  .mc{width:min(88vw,370px);}
 }
+
+/* Tablet landscape 769–1024px */
 @media(min-width:769px) and (max-width:1024px){
-  .row-cards{grid-template-columns:repeat(7,1fr)!important;gap:10px;}
-  .deco-bird{font-size:65px;}
-  .deco-flower{font-size:80px;}
+  #header h1{font-size:clamp(56px,8vw,80px);}
+  .row-cards{
+    grid-template-columns:repeat(7,1fr)!important;
+    gap:10px;
+  }
+  .deco-bird{font-size:58px;}
+  .deco-flower{font-size:76px;}
 }
 </style>
 </head>
 <body>
-<!-- ════════ PAGE 2: WALL ════════ -->
-<div id="page-wall">
-  <!-- Deco -->
-  <div class="deco-bird left">🕊️</div>
-  <div class="deco-bird right">🕊️</div>
-  <div class="deco-flower fl">🌹🌸</div>
-  <div class="deco-flower fr">🌸🌹</div>
 
-  <div id="lights"><div class="wire"></div></div>
+<!-- Deco -->
+<div class="deco-bird left">🕊️</div>
+<div class="deco-bird right">🕊️</div>
+<div class="deco-flower fl">🌹🌸</div>
+<div class="deco-flower fr">🌸🌹</div>
 
-  <div id="header">
-    <h1>Tìm <em>tên của bạn</em> 🔍</h1>
-    <p class="sub">8 tháng 3 · 2026</p>
-    <p class="instr">Chọn đúng tấm có tên bạn để mở lời chúc bí mật</p>
-    <p id="prog">Đã mở <span id="fc">0</span> / <span id="tc">28</span> tấm</p>
-  </div>
+<div id="lights"><div class="wire"></div></div>
 
-  <div id="wall"></div>
+<div id="header">
+  <h1>Tìm <em>tên của bạn</em></h1>
+  <p class="sub">8 tháng 3 · 2026</p>
+  <p class="instr">Chọn đúng tấm có tên bạn để mở lời chúc bí mật</p>
+  <p id="prog">Đã mở <span id="fc">0</span> / <span id="tc">28</span> tấm</p>
 </div>
+
+<div id="wall"></div>
 
 <!-- MODAL -->
 <div id="modal">
@@ -518,7 +498,7 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:#0a0612;}
     <button class="mc-close" id="mc-close">✕</button>
     <div class="mc-slides" id="mc-slides">
 
-      <!-- Slide 1: Photo + Message -->
+      <!-- Slide 1: Ảnh + Lời chúc -->
       <div class="mc-slide">
         <div class="mc-photo" id="mc-photo">
           <div class="mcp-ph" id="mcp-ph">🌸</div>
@@ -529,7 +509,6 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:#0a0612;}
           <h2 class="mc-name" id="mc-name"></h2>
           <div class="mc-div"></div>
           <p class="mc-msg" id="mc-msg"></p>
-          <div class="mc-fl" id="mc-fl">🌸</div>
         </div>
       </div>
 
@@ -537,7 +516,7 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:#0a0612;}
       <div class="mc-slide">
         <div class="mc-quote-slide" id="mc-quote-slide">
           <p class="q-label">✦ Dành riêng cho bạn ✦</p>
-          <div class="q-emoji-big" id="q-emoji">🌸</div>
+          <div class="q-emoji-big">🌸</div>
           <div class="q-open">"</div>
           <p class="q-text" id="q-text"></p>
           <div class="q-close-quote">"</div>
@@ -545,15 +524,15 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:#0a0612;}
         </div>
       </div>
 
-      <!-- Slide 3: Gift -->
+      <!-- Slide 3: Quà -->
       <div class="mc-slide">
         <div class="mc-gift-slide" id="mc-gift-slide">
-          <p class="gift-label">🎁 Quà của bạn</p>
+          <p class="gift-label">Quà dành cho bạn</p>
           <div class="gift-photo" id="gift-photo">
-            <div id="gift-ph-emoji">🎁</div>
+            <div class="gift-ph-emoji" id="gift-ph-emoji">🎁</div>
             <img id="gift-img" src="" alt="" style="display:none"/>
           </div>
-          <p class="gift-name-label">Món quà dành cho</p>
+          <p class="gift-sublabel">Món quà của</p>
           <p class="gift-item-name" id="gift-item"></p>
           <p class="gift-person" id="gift-person"></p>
         </div>
@@ -564,14 +543,14 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:#0a0612;}
     <!-- Swipe hint -->
     <div class="swipe-arrow" id="swipe-arrow">
       <span>Vuốt để xem</span>
-      <span class="arrow-icon">›</span>
+      <span class="arr-ico">›</span>
     </div>
 
     <!-- Dots -->
     <div class="mc-bottom">
       <button class="mc-dot active" onclick="goSlide(0)"></button>
-      <button class="mc-dot" onclick="goSlide(1)"></button>
-      <button class="mc-dot" onclick="goSlide(2)"></button>
+      <button class="mc-dot"        onclick="goSlide(1)"></button>
+      <button class="mc-dot"        onclick="goSlide(2)"></button>
     </div>
   </div>
 </div>
@@ -579,145 +558,243 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:#0a0612;}
 <canvas id="confetti"></canvas>
 
 <div id="done">
-  <div style="font-size:56px">🎉</div>
+  <div style="font-size:52px">🎉</div>
   <h2>Chúc mừng <em>8/3</em>!</h2>
-  <p>✨ Yêu tất cả các bạn rất nhiều ✨</p>
+  <p>Yêu tất cả các bạn rất nhiều</p>
   <button onclick="document.getElementById('done').classList.remove('show')">Xem lại →</button>
 </div>
 
 <script>
-/* ═══════════════════════════════════════════════════════════
-   DỮ LIỆU — Sửa photo: "photos/TenFile.JPG" cho từng người
-   gift_photo: "photos/gift_TenFile.JPG" nếu muốn ảnh quà
-═══════════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════
+   DỮ LIỆU — đổi photo:"photos/TenFile.JPG" cho từng người
+   gift_photo:"photos/gift_Ten.JPG" nếu có ảnh quà
+═══════════════════════════════════════════════════════ */
 const PEOPLE = [
-  { name:"Thanh An",      fullname:"Lê Thanh An",              zodiac:"Bảo Bình",   photo:"photos/An.JPG",         msg:"Chúc bạn luôn là cơn gió mang theo những ý tưởng mới lạ, nơi bạn đi qua thế giới dường như trở nên thú vị và khác biệt hơn một chút.",            quote:"Hy vọng giữa những ngày học đến khuya, bạn vẫn nhớ rằng có những người mong bạn ngủ sớm và mơ một giấc thật yên.",                                                                                                    gift:"Dutch Lady Socola",  gift_photo:"" },
-  { name:"Khiết Anh",     fullname:"Đỗ Trang Khiết Anh",       zodiac:"Kim Ngưu",   photo:"photos/KhietAnh.JPG",   msg:"Chúc bạn luôn vững vàng như một khu vườn mùa xuân, chậm rãi nhưng đầy sức sống, nơi mọi điều đẹp đẽ đều có thể nở hoa.",                         quote:"Hy vọng giữa những ngày học tập bận rộn và những buổi tối thức khuya làm bài, bạn vẫn nhớ dành cho mình một chút dịu dàng. Bạn đã cố gắng rất nhiều rồi.",                                                              gift:"Metis Socola",       gift_photo:"" },
-  { name:"Phương Anh",    fullname:"Dương Phương Anh",          zodiac:"Bảo Bình",   photo:"photos/PhuongAnh.JPG",  msg:"Chúc bạn luôn giữ được sự tự do trong tâm hồn, để mỗi suy nghĩ của bạn giống như một vì sao nhỏ làm bầu trời thêm rực rỡ.",                     quote:"Có thể hôm nay bạn phải đối mặt với rất nhiều deadline và áp lực, nhưng mong rằng bạn cũng sẽ nhớ nghỉ ngơi một chút. Những người luôn cố gắng như bạn đôi khi quên rằng mình cũng xứng đáng được chăm sóc.",        gift:"Oatside",            gift_photo:"" },
-  { name:"Ánh Dương",     fullname:"Vũ Ngọc Ánh Dương",        zodiac:"Xử Nữ",      photo:"photos/AnhDuong.JPG",   msg:"Chúc bạn luôn tinh tế như ánh nắng sớm, dịu dàng nhưng đủ ấm để làm ngày mới của người khác trở nên dễ chịu hơn.",                              quote:"Bạn có thể không nhận ra, nhưng mỗi ngày bạn đều đang tiến bộ hơn một chút. Những bước nhỏ mà bạn đang đi hôm nay sẽ trở thành một hành trình rất đẹp khi bạn nhìn lại sau này.",                                       gift:"Milo",               gift_photo:"" },
-  { name:"Nhật Hà",       fullname:"Phan Nhật Hà",              zodiac:"Thiên Bình", photo:"photos/NhatHa.JPG",     msg:"Chúc bạn luôn mang trong mình sự cân bằng tuyệt đẹp, như một bản nhạc mà mỗi nốt vang lên đều hài hòa.",                                         quote:"Nếu hôm nay bạn thấy hơi mệt, mong rằng bạn sẽ đối xử với bản thân mình nhẹ nhàng hơn một chút. Bạn không cần phải hoàn hảo, bạn chỉ cần tiếp tục cố gắng theo cách của riêng mình.",                                  gift:"Dutch Lady Dâu",     gift_photo:"" },
-  { name:"Bảo Hân",       fullname:"Nguyễn Bảo Hân",           zodiac:"Nhân Mã",    photo:"photos/BaoHan.JPG",     msg:"Chúc bạn luôn giữ được tinh thần phiêu lưu của mình, để thế giới rộng lớn này luôn chờ bạn khám phá thêm những chân trời mới.",                  quote:"Nếu tối nay bạn lại học đến khuya, hy vọng bạn vẫn nhớ uống nước, ăn một chút gì đó và nghỉ ngơi khi cần. Không có thành công nào đáng giá nếu bạn quên chăm sóc chính mình.",                                        gift:"Dutch Lady",          gift_photo:"" },
-  { name:"An Khánh",      fullname:"Đào Võ An Khánh",          zodiac:"Nhân Mã",    photo:"photos/AnKhanh.JPG",    msg:"Chúc bạn luôn bước đi với sự nhiệt huyết trong tim, như một người luôn nhìn thấy con đường phía trước sáng hơn ngày hôm qua.",                    quote:"Những ngày áp lực đôi khi khiến chúng ta quên mất mình đã đi được bao xa. Hy vọng hôm nay bạn sẽ nhớ rằng bạn đã vượt qua rất nhiều điều để đến được đây.",                                                            gift:"Probi Đào",          gift_photo:"" },
-  { name:"Hồng Khánh",    fullname:"Phạm Hồng Khánh",          zodiac:"Ma Kết",     photo:"photos/HongKhanh.JPG",  msg:"Chúc bạn luôn vững vàng như một ngọn núi, âm thầm nhưng mạnh mẽ, nơi mọi ước mơ đều có thể được xây dựng từng chút một.",                       quote:"Hy vọng hôm nay bạn sẽ có một bữa ăn ngon và một giấc ngủ sâu. Những điều nhỏ bé như vậy đôi khi lại là điều giúp chúng ta tiếp tục mạnh mẽ vào ngày mai.",                                                           gift:"Metis Dâu",          gift_photo:"" },
-  { name:"Mỹ Kim",        fullname:"Hồ Hoàng Mỹ Kim",          zodiac:"Song Tử",    photo:"photos/MyKim.JPG",      msg:"Chúc bạn luôn mang theo sự lanh lợi và những câu chuyện thú vị, khiến mọi cuộc trò chuyện xung quanh bạn đều trở nên sống động.",                quote:"Nếu hôm nay bạn cảm thấy hơi quá tải, hãy nhớ rằng bạn không cần phải giải quyết mọi thứ ngay lập tức. Đôi khi nghỉ ngơi một chút cũng là một cách để tiếp tục tiến về phía trước.",                                    gift:"Fami",               gift_photo:"" },
-  { name:"Phương Linh",   fullname:"Ngô Phương Linh",          zodiac:"Xử Nữ",      photo:"photos/PhuongLinh.JPG", msg:"Chúc bạn luôn tinh tế trong từng điều nhỏ bé, để mọi thứ bạn chạm vào đều trở nên chỉn chu và đẹp đẽ.",                                         quote:"Bạn không cần phải chứng minh điều gì với cả thế giới hôm nay. Chỉ cần bạn vẫn đang cố gắng sống tốt với những gì mình có, như vậy đã rất đáng quý rồi.",                                                              gift:"Dutch Lady",          gift_photo:"" },
-  { name:"Đan Linh",      fullname:"Nguyễn Ngọc Đan Linh",     zodiac:"Cự Giải",    photo:"photos/DanLinh.JPG",    msg:"Chúc bạn luôn giữ được trái tim ấm áp, giống như một mái nhà khiến mọi người đều cảm thấy bình yên khi ở gần.",                                  quote:"Những bước đi nhỏ mỗi ngày có thể trông rất bình thường, nhưng theo thời gian chúng sẽ tạo nên một con đường rất dài. Và bạn đang đi trên con đường đó rất tốt.",                                                      gift:"Fami",               gift_photo:"" },
-  { name:"Kim Ngân",      fullname:"Hà Kiều Kim Ngân",         zodiac:"Ma Kết",     photo:"photos/KimNgan.JPG",    msg:"Chúc bạn luôn bền bỉ và kiên định, từng bước tiến về phía trước như người đang xây một tòa tháp từ chính ước mơ của mình.",                      quote:"Hy vọng hôm nay sẽ có một điều gì đó nhỏ bé khiến bạn mỉm cười. Có thể chỉ là một bài nhạc, một tin nhắn hay một khoảnh khắc bình yên.",                                                                              gift:"Dutch Lady Socola",  gift_photo:"" },
-  { name:"Thanh Ngân",    fullname:"Ngô Thị Thanh Ngân",       zodiac:"Sư Tử",      photo:"photos/ThanhNgan.JPG",  msg:"Chúc bạn luôn tỏa sáng như mặt trời nhỏ, nơi bạn xuất hiện là nơi có thêm sự ấm áp và năng lượng.",                                             quote:"Bạn mạnh mẽ hơn bạn nghĩ rất nhiều. Những ngày khó khăn rồi cũng sẽ trở thành một phần câu chuyện đẹp trong hành trình của bạn.",                                                                                     gift:"Milo",               gift_photo:"" },
-  { name:"Thảo Nguyên",   fullname:"Tạ Đỗ Thảo Nguyên",       zodiac:"Bạch Dương", photo:"photos/ThaoNguyen.JPG", msg:"Chúc bạn luôn giữ được sự dũng cảm của người tiên phong, người không ngại bước đi trước để mở ra những con đường mới.",                         quote:"Bạn không cần phải chạy nhanh hơn người khác để trở nên đáng giá. Chỉ cần bạn tiếp tục đi theo nhịp của riêng mình.",                                                                                                  gift:"Dutch Lady Dâu",     gift_photo:"" },
-  { name:"Uyên Nhi",      fullname:"Nguyễn Huỳnh Uyên Nhi",   zodiac:"Thiên Bình", photo:"photos/UyenNhi.JPG",    msg:"Chúc bạn luôn mang theo sự duyên dáng tự nhiên, giống như một làn gió nhẹ khiến mọi người xung quanh đều cảm thấy dễ chịu.",                    quote:"Hy vọng hôm nay bạn sẽ nhớ rằng bản thân mình cũng rất quan trọng. Đừng quên chăm sóc chính mình giữa những ngày bận rộn.",                                                                                           gift:"Probi",              gift_photo:"" },
-  { name:"Vân Nhi",       fullname:"Nguyễn Thị Vân Nhi",      zodiac:"Bảo Bình",   photo:"photos/VanNhi.JPG",     msg:"Chúc bạn luôn giữ được sự độc đáo của mình, để dù ở đâu bạn cũng là một màu sắc không thể trộn lẫn.",                                           quote:"Bạn có thể không nhận ra, nhưng từng nỗ lực nhỏ của bạn đang xây dựng nên một tương lai rất đáng tự hào.",                                                                                                             gift:"Probi ít đường",     gift_photo:"" },
-  { name:"Tuyết Phương",  fullname:"Phạm Tuyết Phương",        zodiac:"Kim Ngưu",   photo:"photos/TuyetPhuong.JPG",msg:"Chúc bạn luôn kiên định và bình yên, như một khu vườn vững chãi giữa mọi mùa thay đổi.",                                                         quote:"Nếu hôm nay bạn thấy áp lực, hãy nhớ rằng bạn không cần phải gánh mọi thứ một mình. Nghỉ ngơi một chút cũng là một phần của hành trình.",                                                                             gift:"Vinamilk Chuối",     gift_photo:"" },
-  { name:"Uyên Phương",   fullname:"Trần Lê Uyên Phương",      zodiac:"Ma Kết",     photo:"photos/UyenPhuong.JPG", msg:"Chúc bạn luôn tiến về phía trước với sự bền bỉ đáng nể, nơi mỗi bước đi đều đưa bạn gần hơn đến những điều lớn lao.",                           quote:"Bạn xứng đáng với những điều dịu dàng của cuộc sống. Và hy vọng bạn sẽ luôn nhớ điều đó.",                                                                                                                             gift:"Dutch Lady Dâu",     gift_photo:"" },
-  { name:"Minh Phương",   fullname:"Vũ Minh Phương",           zodiac:"Ma Kết",     photo:"photos/MinhPhuong.JPG", msg:"Chúc bạn luôn giữ được bản lĩnh thầm lặng, như người leo núi luôn biết rằng đỉnh cao chỉ dành cho những ai kiên trì.",                          quote:"Hy vọng hôm nay bạn sẽ tự nói với bản thân một lời tử tế. Bạn đã cố gắng rất nhiều rồi.",                                                                                                                              gift:"Fami",               gift_photo:"" },
-  { name:"Kim Thanh",     fullname:"Phùng Kim Thanh",           zodiac:"Thiên Bình", photo:"photos/KimThanh.JPG",   msg:"Chúc bạn luôn mang theo sự tinh tế và hài hòa, khiến mọi không gian xung quanh trở nên nhẹ nhàng hơn.",                                         quote:"Những ngày khó khăn không làm bạn yếu đi. Chúng chỉ cho thấy bạn đang cố gắng đến mức nào.",                                                                                                                          gift:"Dutch Lady",          gift_photo:"" },
-  { name:"Minh Thư",      fullname:"Nguyễn Minh Thư",          zodiac:"Kim Ngưu",   photo:"photos/MinhThu.JPG",    msg:"Chúc bạn luôn mạnh mẽ và ổn định, như một điểm tựa vững chắc cho những điều đẹp đẽ trong cuộc sống.",                                            quote:"Hy vọng tối nay bạn sẽ ngủ ngon hơn một chút, để ngày mai thức dậy với một trái tim nhẹ nhàng hơn.",                                                                                                                   gift:"Milo",               gift_photo:"" },
-  { name:"Anh Thư",       fullname:"Trần Nguyễn Anh Thư",      zodiac:"Ma Kết",     photo:"photos/AnhThu.JPG",     msg:"Chúc bạn luôn bước đi với sự quyết tâm, nơi mỗi mục tiêu đều dần trở thành hiện thực nhờ nỗ lực của bạn.",                                      quote:"Nếu hôm nay bạn thấy mệt, hãy cho mình một khoảng lặng nhỏ. Bạn không cần phải luôn mạnh mẽ.",                                                                                                                        gift:"Oatside Socola",     gift_photo:"" },
-  { name:"Thanh Thủy",    fullname:"Vũ Thanh Thủy",            zodiac:"Bạch Dương", photo:"photos/ThanhThuy.JPG",  msg:"Chúc bạn luôn tràn đầy năng lượng và lòng dũng cảm, để mỗi ngày đều là một hành trình đáng nhớ.",                                               quote:"Nếu tối nay bạn lại học đến khuya, mong rằng bạn cũng nhớ nhìn lên bầu trời một chút. Bạn đang đi trên con đường của riêng mình, và nó rất đáng quý.",                                                                gift:"Vinamilk Óc Chó",    gift_photo:"" },
-  { name:"Bảo Trâm",      fullname:"Phạm Hồ Bảo Trâm",        zodiac:"Sư Tử",      photo:"photos/BaoTram.JPG",    msg:"Chúc bạn luôn rực rỡ theo cách riêng của mình, giống như ánh sáng khiến mọi người xung quanh đều cảm thấy được truyền cảm hứng.",                 quote:"Những người luôn cố gắng như bạn thường không nhận ra mình đã mạnh mẽ đến thế nào. Nhưng thật ra bạn đã vượt qua rất nhiều điều rồi.",                                                                                 gift:"Dutch Lady Socola",  gift_photo:"" },
-  { name:"Thanh Tuyền",   fullname:"Nguyễn Ngọc Thanh Tuyền",  zodiac:"Bảo Bình",   photo:"photos/ThanhTuyen.JPG", msg:"Chúc bạn luôn sáng tạo và khác biệt, như một ý tưởng đẹp bất ngờ xuất hiện giữa những điều quen thuộc.",                                         quote:"Những ngày bận rộn có thể khiến bạn cảm thấy mình chưa làm đủ tốt. Nhưng thật ra việc bạn vẫn tiếp tục cố gắng mỗi ngày đã là một điều rất đẹp.",                                                                    gift:"Probi Việt Quất",    gift_photo:"" },
-  { name:"Mai Uyên",      fullname:"Nguyễn Mai Uyên",          zodiac:"Bọ Cạp",     photo:"photos/MaiUyen.JPG",    msg:"Chúc bạn luôn giữ được chiều sâu trong tâm hồn, nơi sức mạnh nội tại khiến mọi giấc mơ trở nên có ý nghĩa.",                                    quote:"Ở đâu đó trong thế giới này, luôn có những người mong rằng bạn sẽ ổn và hạnh phúc.",                                                                                                                                   gift:"Milo",               gift_photo:"" },
-  { name:"Hoàng Uyên",    fullname:"Trần Nguyễn Hoàng Uyên",   zodiac:"Xử Nữ",      photo:"photos/HoangUyen.JPG",  msg:"Chúc bạn luôn chu đáo và tinh tế, như người luôn biết cách khiến những điều nhỏ bé trở nên đặc biệt.",                                           quote:"Nếu hôm nay bạn lại học đến khuya, mong rằng bạn cũng sẽ nhớ nhìn ra ngoài cửa sổ một chút. Thế giới vẫn rất rộng lớn và bình yên.",                                                                                  gift:"Vinamilk Chuối",     gift_photo:"" },
-  { name:"Phi Yến",       fullname:"Lương Phi Yến",            zodiac:"Bảo Bình",   photo:"photos/PhiYen.JPG",     msg:"Chúc bạn luôn tự do như cánh chim trên bầu trời rộng lớn, mang theo những suy nghĩ độc đáo và những ước mơ bay xa.",                             quote:"Bạn không cần phải hoàn hảo để trở nên đáng quý. Chỉ cần bạn là chính mình.",                                                                                                                                         gift:"Metis Nho",          gift_photo:"" },
+  { name:"Thanh An",     zodiac:"Bảo Bình",   photo:"photos/An.JPG",
+    msg:"Chúc bạn luôn là cơn gió mang theo những ý tưởng mới lạ, nơi bạn đi qua thế giới dường như trở nên thú vị và khác biệt hơn một chút.",
+    quote:"Hy vọng giữa những ngày học đến khuya, bạn vẫn nhớ rằng có những người mong bạn ngủ sớm và mơ một giấc thật yên.",
+    gift:"Dutch Lady Socola", gift_photo:"" },
+
+  { name:"Khiết Anh",    zodiac:"Kim Ngưu",   photo:"photos/KhietAnh.JPG",
+    msg:"Chúc bạn luôn vững vàng như một khu vườn mùa xuân, chậm rãi nhưng đầy sức sống, nơi mọi điều đẹp đẽ đều có thể nở hoa.",
+    quote:"Hy vọng giữa những ngày học tập bận rộn và những buổi tối thức khuya làm bài, bạn vẫn nhớ dành cho mình một chút dịu dàng. Bạn đã cố gắng rất nhiều rồi.",
+    gift:"Metis Socola", gift_photo:"" },
+
+  { name:"Phương Anh",   zodiac:"Bảo Bình",   photo:"photos/PhuongAnh.JPG",
+    msg:"Chúc bạn luôn giữ được sự tự do trong tâm hồn, để mỗi suy nghĩ của bạn giống như một vì sao nhỏ làm bầu trời thêm rực rỡ.",
+    quote:"Có thể hôm nay bạn phải đối mặt với rất nhiều deadline và áp lực, nhưng mong rằng bạn cũng sẽ nhớ nghỉ ngơi một chút.",
+    gift:"Oatside", gift_photo:"" },
+
+  { name:"Ánh Dương",    zodiac:"Xử Nữ",      photo:"photos/AnhDuong.JPG",
+    msg:"Chúc bạn luôn tinh tế như ánh nắng sớm, dịu dàng nhưng đủ ấm để làm ngày mới của người khác trở nên dễ chịu hơn.",
+    quote:"Bạn có thể không nhận ra, nhưng mỗi ngày bạn đều đang tiến bộ hơn một chút. Những bước nhỏ hôm nay sẽ trở thành một hành trình rất đẹp.",
+    gift:"Milo", gift_photo:"" },
+
+  { name:"Nhật Hà",      zodiac:"Thiên Bình", photo:"photos/NhatHa.JPG",
+    msg:"Chúc bạn luôn mang trong mình sự cân bằng tuyệt đẹp, như một bản nhạc mà mỗi nốt vang lên đều hài hòa.",
+    quote:"Nếu hôm nay bạn thấy hơi mệt, mong rằng bạn sẽ đối xử với bản thân mình nhẹ nhàng hơn. Bạn không cần phải hoàn hảo.",
+    gift:"Dutch Lady Dâu", gift_photo:"" },
+
+  { name:"Bảo Hân",      zodiac:"Nhân Mã",    photo:"photos/BaoHan.JPG",
+    msg:"Chúc bạn luôn giữ được tinh thần phiêu lưu của mình, để thế giới rộng lớn này luôn chờ bạn khám phá thêm những chân trời mới.",
+    quote:"Nếu tối nay bạn lại học đến khuya, hy vọng bạn vẫn nhớ uống nước, ăn một chút gì đó và nghỉ ngơi khi cần.",
+    gift:"Dutch Lady", gift_photo:"" },
+
+  { name:"An Khánh",     zodiac:"Nhân Mã",    photo:"photos/AnKhanh.JPG",
+    msg:"Chúc bạn luôn bước đi với sự nhiệt huyết trong tim, như một người luôn nhìn thấy con đường phía trước sáng hơn ngày hôm qua.",
+    quote:"Những ngày áp lực đôi khi khiến chúng ta quên mất mình đã đi được bao xa. Hy vọng hôm nay bạn sẽ nhớ rằng bạn đã vượt qua rất nhiều điều.",
+    gift:"Probi Đào", gift_photo:"" },
+
+  { name:"Hồng Khánh",   zodiac:"Ma Kết",     photo:"photos/HongKhanh.JPG",
+    msg:"Chúc bạn luôn vững vàng như một ngọn núi, âm thầm nhưng mạnh mẽ, nơi mọi ước mơ đều có thể được xây dựng từng chút một.",
+    quote:"Hy vọng hôm nay bạn sẽ có một bữa ăn ngon và một giấc ngủ sâu. Những điều nhỏ bé như vậy đôi khi lại là điều giúp chúng ta tiếp tục.",
+    gift:"Metis Dâu", gift_photo:"" },
+
+  { name:"Mỹ Kim",       zodiac:"Song Tử",    photo:"photos/MyKim.JPG",
+    msg:"Chúc bạn luôn mang theo sự lanh lợi và những câu chuyện thú vị, khiến mọi cuộc trò chuyện xung quanh bạn đều trở nên sống động.",
+    quote:"Nếu hôm nay bạn cảm thấy hơi quá tải, hãy nhớ rằng bạn không cần phải giải quyết mọi thứ ngay lập tức.",
+    gift:"Fami", gift_photo:"" },
+
+  { name:"Phương Linh",  zodiac:"Xử Nữ",      photo:"photos/PhuongLinh.JPG",
+    msg:"Chúc bạn luôn tinh tế trong từng điều nhỏ bé, để mọi thứ bạn chạm vào đều trở nên chỉn chu và đẹp đẽ.",
+    quote:"Bạn không cần phải chứng minh điều gì với cả thế giới hôm nay. Chỉ cần bạn vẫn đang cố gắng sống tốt.",
+    gift:"Dutch Lady", gift_photo:"" },
+
+  { name:"Đan Linh",     zodiac:"Cự Giải",    photo:"photos/DanLinh.JPG",
+    msg:"Chúc bạn luôn giữ được trái tim ấm áp, giống như một mái nhà khiến mọi người đều cảm thấy bình yên khi ở gần.",
+    quote:"Những bước đi nhỏ mỗi ngày có thể trông rất bình thường, nhưng theo thời gian chúng sẽ tạo nên một con đường rất dài.",
+    gift:"Fami", gift_photo:"" },
+
+  { name:"Kim Ngân",     zodiac:"Ma Kết",     photo:"photos/KimNgan.JPG",
+    msg:"Chúc bạn luôn bền bỉ và kiên định, từng bước tiến về phía trước như người đang xây một tòa tháp từ chính ước mơ của mình.",
+    quote:"Hy vọng hôm nay sẽ có một điều gì đó nhỏ bé khiến bạn mỉm cười. Có thể chỉ là một bài nhạc hay một khoảnh khắc bình yên.",
+    gift:"Dutch Lady Socola", gift_photo:"" },
+
+  { name:"Thanh Ngân",   zodiac:"Sư Tử",      photo:"photos/ThanhNgan.JPG",
+    msg:"Chúc bạn luôn tỏa sáng như mặt trời nhỏ, nơi bạn xuất hiện là nơi có thêm sự ấm áp và năng lượng.",
+    quote:"Bạn mạnh mẽ hơn bạn nghĩ rất nhiều. Những ngày khó khăn rồi cũng sẽ trở thành một phần câu chuyện đẹp trong hành trình của bạn.",
+    gift:"Milo", gift_photo:"" },
+
+  { name:"Thảo Nguyên",  zodiac:"Bạch Dương", photo:"photos/ThaoNguyen.JPG",
+    msg:"Chúc bạn luôn giữ được sự dũng cảm của người tiên phong, người không ngại bước đi trước để mở ra những con đường mới.",
+    quote:"Bạn không cần phải chạy nhanh hơn người khác để trở nên đáng giá. Chỉ cần bạn tiếp tục đi theo nhịp của riêng mình.",
+    gift:"Dutch Lady Dâu", gift_photo:"" },
+
+  { name:"Uyên Nhi",     zodiac:"Thiên Bình", photo:"photos/UyenNhi.JPG",
+    msg:"Chúc bạn luôn mang theo sự duyên dáng tự nhiên, giống như một làn gió nhẹ khiến mọi người xung quanh đều cảm thấy dễ chịu.",
+    quote:"Hy vọng hôm nay bạn sẽ nhớ rằng bản thân mình cũng rất quan trọng. Đừng quên chăm sóc chính mình giữa những ngày bận rộn.",
+    gift:"Probi", gift_photo:"" },
+
+  { name:"Vân Nhi",      zodiac:"Bảo Bình",   photo:"photos/VanNhi.JPG",
+    msg:"Chúc bạn luôn giữ được sự độc đáo của mình, để dù ở đâu bạn cũng là một màu sắc không thể trộn lẫn.",
+    quote:"Bạn có thể không nhận ra, nhưng từng nỗ lực nhỏ của bạn đang xây dựng nên một tương lai rất đáng tự hào.",
+    gift:"Probi ít đường", gift_photo:"" },
+
+  { name:"Tuyết Phương", zodiac:"Kim Ngưu",   photo:"photos/TuyetPhuong.JPG",
+    msg:"Chúc bạn luôn kiên định và bình yên, như một khu vườn vững chãi giữa mọi mùa thay đổi.",
+    quote:"Nếu hôm nay bạn thấy áp lực, hãy nhớ rằng bạn không cần phải gánh mọi thứ một mình. Nghỉ ngơi một chút cũng là một phần của hành trình.",
+    gift:"Vinamilk Chuối", gift_photo:"" },
+
+  { name:"Uyên Phương",  zodiac:"Ma Kết",     photo:"photos/UyenPhuong.JPG",
+    msg:"Chúc bạn luôn tiến về phía trước với sự bền bỉ đáng nể, nơi mỗi bước đi đều đưa bạn gần hơn đến những điều lớn lao.",
+    quote:"Bạn xứng đáng với những điều dịu dàng của cuộc sống. Và hy vọng bạn sẽ luôn nhớ điều đó.",
+    gift:"Dutch Lady Dâu", gift_photo:"" },
+
+  { name:"Minh Phương",  zodiac:"Ma Kết",     photo:"photos/MinhPhuong.JPG",
+    msg:"Chúc bạn luôn giữ được bản lĩnh thầm lặng, như người leo núi luôn biết rằng đỉnh cao chỉ dành cho những ai kiên trì.",
+    quote:"Hy vọng hôm nay bạn sẽ tự nói với bản thân một lời tử tế. Bạn đã cố gắng rất nhiều rồi.",
+    gift:"Fami", gift_photo:"" },
+
+  { name:"Kim Thanh",    zodiac:"Thiên Bình", photo:"photos/KimThanh.JPG",
+    msg:"Chúc bạn luôn mang theo sự tinh tế và hài hòa, khiến mọi không gian xung quanh trở nên nhẹ nhàng hơn.",
+    quote:"Những ngày khó khăn không làm bạn yếu đi. Chúng chỉ cho thấy bạn đang cố gắng đến mức nào.",
+    gift:"Dutch Lady", gift_photo:"" },
+
+  { name:"Minh Thư",     zodiac:"Kim Ngưu",   photo:"photos/MinhThu.JPG",
+    msg:"Chúc bạn luôn mạnh mẽ và ổn định, như một điểm tựa vững chắc cho những điều đẹp đẽ trong cuộc sống.",
+    quote:"Hy vọng tối nay bạn sẽ ngủ ngon hơn một chút, để ngày mai thức dậy với một trái tim nhẹ nhàng hơn.",
+    gift:"Milo", gift_photo:"" },
+
+  { name:"Anh Thư",      zodiac:"Ma Kết",     photo:"photos/AnhThu.JPG",
+    msg:"Chúc bạn luôn bước đi với sự quyết tâm, nơi mỗi mục tiêu đều dần trở thành hiện thực nhờ nỗ lực của bạn.",
+    quote:"Nếu hôm nay bạn thấy mệt, hãy cho mình một khoảng lặng nhỏ. Bạn không cần phải luôn mạnh mẽ.",
+    gift:"Oatside Socola", gift_photo:"" },
+
+  { name:"Thanh Thủy",   zodiac:"Bạch Dương", photo:"photos/ThanhThuy.JPG",
+    msg:"Chúc bạn luôn tràn đầy năng lượng và lòng dũng cảm, để mỗi ngày đều là một hành trình đáng nhớ.",
+    quote:"Nếu tối nay bạn lại học đến khuya, mong rằng bạn cũng nhớ nhìn lên bầu trời một chút. Bạn đang đi trên con đường của riêng mình.",
+    gift:"Vinamilk Óc Chó", gift_photo:"" },
+
+  { name:"Bảo Trâm",     zodiac:"Sư Tử",      photo:"photos/BaoTram.JPG",
+    msg:"Chúc bạn luôn rực rỡ theo cách riêng của mình, giống như ánh sáng khiến mọi người xung quanh đều cảm thấy được truyền cảm hứng.",
+    quote:"Những người luôn cố gắng như bạn thường không nhận ra mình đã mạnh mẽ đến thế nào. Nhưng thật ra bạn đã vượt qua rất nhiều điều rồi.",
+    gift:"Dutch Lady Socola", gift_photo:"" },
+
+  { name:"Thanh Tuyền",  zodiac:"Bảo Bình",   photo:"photos/ThanhTuyen.JPG",
+    msg:"Chúc bạn luôn sáng tạo và khác biệt, như một ý tưởng đẹp bất ngờ xuất hiện giữa những điều quen thuộc.",
+    quote:"Những ngày bận rộn có thể khiến bạn cảm thấy mình chưa làm đủ tốt. Nhưng việc bạn vẫn tiếp tục cố gắng mỗi ngày đã là một điều rất đẹp.",
+    gift:"Probi Việt Quất", gift_photo:"" },
+
+  { name:"Mai Uyên",     zodiac:"Bọ Cạp",     photo:"photos/MaiUyen.JPG",
+    msg:"Chúc bạn luôn giữ được chiều sâu trong tâm hồn, nơi sức mạnh nội tại khiến mọi giấc mơ trở nên có ý nghĩa.",
+    quote:"Ở đâu đó trong thế giới này, luôn có những người mong rằng bạn sẽ ổn và hạnh phúc.",
+    gift:"Milo", gift_photo:"" },
+
+  { name:"Hoàng Uyên",   zodiac:"Xử Nữ",      photo:"photos/HoangUyen.JPG",
+    msg:"Chúc bạn luôn chu đáo và tinh tế, như người luôn biết cách khiến những điều nhỏ bé trở nên đặc biệt.",
+    quote:"Nếu hôm nay bạn lại học đến khuya, mong rằng bạn cũng sẽ nhớ nhìn ra ngoài cửa sổ một chút. Thế giới vẫn rất rộng lớn và bình yên.",
+    gift:"Vinamilk Chuối", gift_photo:"" },
+
+  { name:"Phi Yến",      zodiac:"Bảo Bình",   photo:"photos/PhiYen.JPG",
+    msg:"Chúc bạn luôn tự do như cánh chim trên bầu trời rộng lớn, mang theo những suy nghĩ độc đáo và những ước mơ bay xa.",
+    quote:"Bạn không cần phải hoàn hảo để trở nên đáng quý. Chỉ cần bạn là chính mình.",
+    gift:"Metis Nho", gift_photo:"" },
 ];
 
-const ROWS = [7, 7, 7, 7];
+const ROWS   = [7, 7, 7, 7];
 const COLORS = [
-  ['#fff5f0','#ffe8d6'],['#fff0f5','#ffd6e8'],['#f5f0ff','#e8d6ff'],
-  ['#f0fff5','#d6ffe8'],['#fffff0','#fff5d6'],['#f0f8ff','#d6eeff'],
-  ['#fff8f0','#ffecd6'],['#fdf0ff','#f5d6ff'],
+  ['#fff5ef','#ffe7d4'],['#fff0f5','#ffd4e6'],['#f5f0ff','#e8d4ff'],
+  ['#f0fff4','#d4ffe6'],['#ffffe0','#fff4d4'],['#f0f8ff','#d4eeff'],
+  ['#fff8ef','#ffecd4'],['#fdf0ff','#f4d4ff'],
 ];
 
-/* ─── INTRO ─── */
-function openEnvelope() {
-  const env = document.getElementById('env');
-  const hint = document.getElementById('env-hint');
-  if (env.classList.contains('open')) return;
-  env.classList.add('open');
-  hint.style.opacity = '0';
-  setTimeout(() => {
-    document.getElementById('letter-box').style.display = 'block';
-    env.style.display = 'none';
-    hint.style.display = 'none';
-  }, 700);
+/* ── Fairy lights ── */
+const lightsEl = document.getElementById('lights');
+const BC = ['#ff6b6b','#ffd166','#06d6a0','#a855f7','#ec4899','#feca57','#48dbfb','#f4a261'];
+for (let i = 2; i <= 98; i += 4) {
+  const b = document.createElement('div'); b.className = 'bulb';
+  const c = BC[Math.floor(Math.random()*BC.length)];
+  b.style.cssText = `left:${i}%;background:${c};--c:${c};--d:${1.4+Math.random()*2.4}s;--dl:${Math.random()*3}s;`;
+  lightsEl.appendChild(b);
 }
 
+/* ── Build wall ── */
+document.getElementById('tc').textContent = PEOPLE.length;
+const wall = document.getElementById('wall');
+let openedCount = 0, gi = 0;
 
+ROWS.forEach(count => {
+  const row = document.createElement('div'); row.className = 'cl-row';
+  const rc  = document.createElement('div'); rc.className  = 'row-cards';
+  rc.style.setProperty('--cols', count);
 
-/* ─── WALL ─── */
-function initWall() {
-  // Fairy lights
-  const lightsEl = document.getElementById('lights');
-  const BC = ['#ff6b6b','#ffd166','#06d6a0','#a855f7','#ec4899','#feca57','#48dbfb','#f4a261'];
-  for (let i = 2; i <= 98; i += 4) {
-    const b = document.createElement('div'); b.className = 'bulb';
-    const c = BC[Math.floor(Math.random()*BC.length)];
-    b.style.cssText = `left:${i}%;background:${c};--c:${c};--d:${1.5+Math.random()*2.5}s;--dl:${Math.random()*3}s;`;
-    lightsEl.appendChild(b);
-  }
+  for (let i = 0; i < count && gi < PEOPLE.length; i++, gi++) {
+    const g    = PEOPLE[gi];
+    const cols = COLORS[gi % COLORS.length];
+    const ra   = (Math.random()-.5)*5.5;
+    const rb   = (Math.random()-.5)*5.5;
 
-  document.getElementById('tc').textContent = PEOPLE.length;
-  const wall = document.getElementById('wall');
-  let openedCount = 0, gi = 0;
+    const cw   = document.createElement('div'); cw.className = 'cw';
+    const card = document.createElement('div'); card.className = 'card';
+    card.style.cssText =
+      `--ra:${ra}deg;--rb:${rb}deg;` +
+      `--sw:${2.6+Math.random()*2.4}s;--sd:${Math.random()*4.5}s;` +
+      `--c1:${cols[0]};--c2:${cols[1]};`;
 
-  ROWS.forEach(count => {
-    const row = document.createElement('div'); row.className = 'cl-row';
-    const rc  = document.createElement('div'); rc.className  = 'row-cards';
-    rc.style.setProperty('--cols', count);
-
-    for (let i = 0; i < count && gi < PEOPLE.length; i++, gi++) {
-      const g    = PEOPLE[gi];
-      const cols = COLORS[gi % COLORS.length];
-      const ra   = (Math.random()-.5)*6;
-      const rb   = (Math.random()-.5)*6;
-
-      const cw = document.createElement('div'); cw.className = 'cw';
-      const card = document.createElement('div'); card.className = 'card';
-      card.style.cssText = `--ra:${ra}deg;--rb:${rb}deg;--sw:${2.8+Math.random()*2.2}s;--sd:${Math.random()*4}s;--c1:${cols[0]};--c2:${cols[1]};`;
-
-      const lbl = document.createElement('div'); lbl.className = 'card-label';
-      lbl.innerHTML = `
+    card.innerHTML = `
+      <div class="card-label">
         <div class="card-name">${g.name}</div>
         <div class="card-zodiac">${g.zodiac}</div>
         <div class="card-tap">Mở lời chúc</div>
-      `;
-      card.appendChild(lbl);
-      cw.appendChild(card); rc.appendChild(cw);
+      </div>`;
 
-      cw.addEventListener('click', () => {
-        if (!cw.classList.contains('opened')) {
-          cw.classList.add('opened');
-          openedCount++;
-          document.getElementById('fc').textContent = openedCount;
-          fireConfetti(cw);
-          if (openedCount >= PEOPLE.length) setTimeout(() => { document.getElementById('done').classList.add('show'); bigConfetti(); }, 1000);
-        }
-        openModal(g, cols);
-      });
-    }
-    row.appendChild(rc); wall.appendChild(row);
-  });
+    cw.appendChild(card);
+    rc.appendChild(cw);
 
-  // Stars in quote slide
-  const qSlide = document.getElementById('mc-quote-slide');
-  for (let i = 0; i < 22; i++) {
-    const s = document.createElement('div'); s.className = 'q-star';
-    const sz = Math.random()*2.5+.5;
-    s.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${2+Math.random()*3}s;--dl:${Math.random()*4}s;`;
-    qSlide.appendChild(s);
+    cw.addEventListener('click', () => {
+      if (!cw.classList.contains('opened')) {
+        cw.classList.add('opened','just-opened');
+        setTimeout(() => cw.classList.remove('just-opened'), 600);
+        openedCount++;
+        document.getElementById('fc').textContent = openedCount;
+        fireConfetti(cw);
+        if (openedCount >= PEOPLE.length)
+          setTimeout(() => { document.getElementById('done').classList.add('show'); bigConfetti(); }, 900);
+      }
+      openModal(g, cols);
+    });
   }
-  // Sparkles in gift slide
-  const gSlide = document.getElementById('mc-gift-slide');
-  const sparkles = ['✨','💫','🌟','⭐','💝'];
-  for (let i = 0; i < 8; i++) {
-    const s = document.createElement('div'); s.className = 'g-spark';
-    s.textContent = sparkles[Math.floor(Math.random()*sparkles.length)];
-    s.style.cssText=`left:${Math.random()*90+5}%;top:${Math.random()*80+5}%;--d:${1.5+Math.random()*2}s;--dl:${Math.random()*3}s;`;
-    gSlide.appendChild(s);
-  }
+  row.appendChild(rc);
+  wall.appendChild(row);
+});
+
+/* ── Stars & sparkles ── */
+const qSlide = document.getElementById('mc-quote-slide');
+for (let i = 0; i < 24; i++) {
+  const s = document.createElement('div'); s.className = 'q-star';
+  const sz = Math.random()*2.5+.5;
+  s.style.cssText = `width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${2+Math.random()*3.2}s;--dl:${Math.random()*4}s;`;
+  qSlide.appendChild(s);
 }
+const gSlide = document.getElementById('mc-gift-slide');
+['✨','💫','🌟','💝','⭐'].forEach((em,idx) => {
+  const s = document.createElement('div'); s.className = 'g-spark';
+  s.textContent = em;
+  s.style.cssText = `left:${10+idx*17}%;top:${15+Math.random()*55}%;--d:${1.4+Math.random()*2}s;--dl:${idx*.4}s;`;
+  gSlide.appendChild(s);
+});
 
-/* ─── MODAL ─── */
+/* ── MODAL ── */
 const modal    = document.getElementById('modal');
 const mcImg    = document.getElementById('mcp-img');
 const mcPh     = document.getElementById('mcp-ph');
@@ -728,55 +805,66 @@ let curSlide   = 0;
 
 function goSlide(n) {
   curSlide = n;
-  mcSlides.style.transform = `translateX(-${n * 33.333}%)`;
+  mcSlides.style.transform = `translateX(-${n*33.333}%)`;
   dots.forEach((d,i) => d.classList.toggle('active', i===n));
   swipeArr.style.opacity = n < 2 ? '1' : '0';
 }
 
+/* Touch swipe */
 let tx = 0;
 mcSlides.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, {passive:true});
 mcSlides.addEventListener('touchend',   e => {
   const dx = e.changedTouches[0].clientX - tx;
-  if (Math.abs(dx) > 35) goSlide(Math.max(0, Math.min(2, curSlide + (dx < 0 ? 1 : -1))));
+  if (Math.abs(dx) > 32) goSlide(Math.max(0, Math.min(2, curSlide + (dx<0?1:-1))));
 });
-let mx = 0, drag = false;
-mcSlides.addEventListener('mousedown', e => { mx = e.clientX; drag = true; e.preventDefault(); });
-window.addEventListener('mouseup', e => {
-  if (!drag) return; drag = false;
+/* Mouse drag */
+let mx = 0, dragging = false;
+mcSlides.addEventListener('mousedown',  e => { mx = e.clientX; dragging = true; e.preventDefault(); });
+window.addEventListener('mouseup',      e => {
+  if (!dragging) return; dragging = false;
   const dx = e.clientX - mx;
-  if (Math.abs(dx) > 35) goSlide(Math.max(0, Math.min(2, curSlide + (dx < 0 ? 1 : -1))));
+  if (Math.abs(dx) > 32) goSlide(Math.max(0, Math.min(2, curSlide + (dx<0?1:-1))));
 });
 
 function openModal(g, cols) {
   goSlide(0);
 
-  // Slide 1
+  /* Slide 1 */
   document.getElementById('mc-name').textContent = g.name;
   document.getElementById('mc-msg').textContent  = g.msg;
-  document.getElementById('mc-fl').textContent   = '🌸';
-  document.getElementById('mc-photo').style.background = `linear-gradient(135deg,${cols[0]},${cols[1]})`;
+  const photoEl = document.getElementById('mc-photo');
+  photoEl.style.setProperty('--pc1', cols[0]);
+  photoEl.style.setProperty('--pc2', cols[1]);
+
   if (g.photo) {
-    mcImg.src = g.photo; mcImg.style.display = 'block'; mcPh.style.display = 'none';
-    mcImg.onerror = () => { mcImg.style.display='none'; mcPh.style.display='flex'; mcPh.textContent='🌸'; };
+    mcImg.src = g.photo;
+    mcImg.style.display = 'block';
+    mcPh.style.display  = 'none';
+    mcImg.onerror = () => { mcImg.style.display='none'; mcPh.style.display='flex'; };
   } else {
-    mcImg.style.display='none'; mcPh.style.display='flex'; mcPh.textContent='🌸';
+    mcImg.style.display = 'none';
+    mcPh.style.display  = 'flex';
   }
 
-  // Slide 2
-  document.getElementById('q-text').textContent  = g.quote || '';
-  document.getElementById('q-name').textContent  = '— ' + g.name;
-  document.getElementById('q-emoji').textContent = '🌸';
+  /* Slide 2 */
+  document.getElementById('q-text').textContent = g.quote || '';
+  document.getElementById('q-name').textContent = '— ' + g.name;
 
-  // Slide 3
-  document.getElementById('gift-item').textContent   = g.gift || 'Bí mật...';
+  /* Slide 3 */
+  document.getElementById('gift-item').textContent   = g.gift   || 'Bí mật...';
   document.getElementById('gift-person').textContent = '— ' + g.name;
+
+  const gPhotoEl = document.getElementById('gift-photo');
+  gPhotoEl.style.setProperty('--pc1', cols[0]);
+  gPhotoEl.style.setProperty('--pc2', cols[1]);
+
   const gImg = document.getElementById('gift-img');
   const gPh  = document.getElementById('gift-ph-emoji');
   if (g.gift_photo) {
     gImg.src = g.gift_photo; gImg.style.display='block'; gPh.style.display='none';
     gImg.onerror = () => { gImg.style.display='none'; gPh.style.display='flex'; };
   } else {
-    gImg.style.display='none'; gPh.style.display='flex'; gPh.textContent='🎁';
+    gImg.style.display = 'none'; gPh.style.display = 'flex'; gPh.textContent = '🎁';
   }
 
   modal.classList.add('show');
@@ -786,69 +874,73 @@ function openModal(g, cols) {
 function closeModal() {
   modal.classList.remove('show');
   document.body.style.overflow = '';
-  setTimeout(() => { mcImg.src=''; }, 400);
+  setTimeout(() => { mcImg.src = ''; }, 400);
 }
 
 document.getElementById('mc-close').onclick = closeModal;
-modal.addEventListener('click', e => { if (e.target===modal) closeModal(); });
+modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
 document.addEventListener('keydown', e => {
-  if (e.key==='Escape') closeModal();
-  if (e.key==='ArrowRight') goSlide(Math.min(2, curSlide+1));
-  if (e.key==='ArrowLeft')  goSlide(Math.max(0, curSlide-1));
+  if (e.key === 'Escape')      closeModal();
+  if (e.key === 'ArrowRight')  goSlide(Math.min(2, curSlide+1));
+  if (e.key === 'ArrowLeft')   goSlide(Math.max(0, curSlide-1));
 });
 
-/* ─── CONFETTI ─── */
-const cv = document.getElementById('confetti'), ctx = cv.getContext('2d');
-cv.width = window.innerWidth; cv.height = window.innerHeight;
-window.addEventListener('resize', () => { cv.width=window.innerWidth; cv.height=window.innerHeight; });
-let parts = [];
-const CC = ['#e84070','#ff9090','#f4a261','#fde68a','#f9a8d4','#fff','#c084fc','#fca5a5'];
+/* ── CONFETTI ── */
+const cv  = document.getElementById('confetti');
+const ctx = cv.getContext('2d');
+function resizeCv() { cv.width = window.innerWidth; cv.height = window.innerHeight; }
+resizeCv();
+window.addEventListener('resize', resizeCv);
 
-function spawnParts(x, y, n) {
+let parts = [];
+const CC = ['#e84070','#ff9090','#f4a261','#fde68a','#f9a8d4','#fff','#c084fc','#fca5a5','#86efac'];
+
+function spawnParts(x, y, n, spread=1) {
   for (let i = 0; i < n; i++) {
-    const a = Math.random()*Math.PI*2, s = 3+Math.random()*7;
-    parts.push({x, y, vx:Math.cos(a)*s, vy:Math.sin(a)*s-3,
-      sz:4+Math.random()*6, color:CC[Math.floor(Math.random()*CC.length)],
-      life:1, decay:.014+Math.random()*.01, rot:Math.random()*360,
-      rv:(Math.random()-.5)*12, rect:Math.random()>.4});
+    const a = Math.random()*Math.PI*2;
+    const sp = (4+Math.random()*8)*spread;
+    parts.push({
+      x, y, vx:Math.cos(a)*sp, vy:Math.sin(a)*sp-(2*spread),
+      sz:3+Math.random()*6, color:CC[Math.floor(Math.random()*CC.length)],
+      life:1, decay:.012+Math.random()*.01,
+      rot:Math.random()*360, rv:(Math.random()-.5)*14,
+      rect:Math.random()>.35
+    });
   }
 }
 function fireConfetti(el) {
   const r = el.getBoundingClientRect();
-  spawnParts(r.left+r.width/2, r.top+r.height/2, 60);
+  spawnParts(r.left+r.width/2, r.top+r.height/2, 55);
 }
 function bigConfetti() {
-  for (let i=0;i<280;i++)
-    parts.push({x:Math.random()*cv.width, y:-10, vx:(Math.random()-.5)*5,
-      vy:2+Math.random()*6, sz:5+Math.random()*8,
-      color:CC[Math.floor(Math.random()*CC.length)],
-      life:1, decay:.004+Math.random()*.006, rot:Math.random()*360,
-      rv:(Math.random()-.5)*9, rect:Math.random()>.4});
+  for (let i=0; i<300; i++) {
+    parts.push({
+      x:Math.random()*cv.width, y:-12,
+      vx:(Math.random()-.5)*6, vy:2+Math.random()*7,
+      sz:4+Math.random()*8, color:CC[Math.floor(Math.random()*CC.length)],
+      life:1, decay:.003+Math.random()*.006,
+      rot:Math.random()*360, rv:(Math.random()-.5)*10,
+      rect:Math.random()>.35
+    });
+  }
 }
 (function loop() {
   ctx.clearRect(0,0,cv.width,cv.height);
-  parts = parts.filter(p=>p.life>0);
-  parts.forEach(p=>{
-    p.x+=p.vx; p.y+=p.vy; p.vy+=.18; p.vx*=.99;
+  parts = parts.filter(p => p.life > 0);
+  parts.forEach(p => {
+    p.x+=p.vx; p.y+=p.vy; p.vy+=.16; p.vx*=.99;
     p.life-=p.decay; p.rot+=p.rv;
-    ctx.save(); ctx.globalAlpha=p.life; ctx.fillStyle=p.color;
-    ctx.translate(p.x,p.y); ctx.rotate(p.rot*Math.PI/180);
-    if(p.rect) ctx.fillRect(-p.sz/2,-p.sz/4,p.sz,p.sz/2);
-    else{ctx.beginPath();ctx.arc(0,0,p.sz/2,0,Math.PI*2);ctx.fill();}
+    ctx.save();
+    ctx.globalAlpha = Math.max(0, p.life);
+    ctx.fillStyle = p.color;
+    ctx.translate(p.x, p.y);
+    ctx.rotate(p.rot*Math.PI/180);
+    if (p.rect) ctx.fillRect(-p.sz/2,-p.sz/4, p.sz, p.sz/2);
+    else { ctx.beginPath(); ctx.arc(0,0,p.sz/2,0,Math.PI*2); ctx.fill(); }
     ctx.restore();
   });
   requestAnimationFrame(loop);
 })();
-initWall();
 </script>
-
-
-<script>
-
-</script>
-
-</body>
-
-</html>
 </body>
 </html>
