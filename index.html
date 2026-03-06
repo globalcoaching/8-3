@@ -118,8 +118,13 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 /* Modal left: photo */
 .mc-photo{width:52%;flex-shrink:0;position:relative;overflow:hidden;
   background:linear-gradient(135deg,#e9d5ff,#ddd6fe);}
-.mc-photo img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block;}
-.mc-photo .mcp-ph{width:100%;height:100%;min-height:300px;
+.mc-photo img{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+  object-fit:cover;object-position:center top;
+  display:block;
+}
+.mc-photo .mcp-ph{position:absolute;inset:0;width:100%;height:100%;min-height:300px;
   display:flex;align-items:center;justify-content:center;font-size:80px;}
 
 /* Modal right: info */
@@ -209,8 +214,16 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
   }
   .mc-photo{
     width:100%;
-    height:52vw;
+    height:56vw;
     flex-shrink:0;
+    overflow:hidden;
+  }
+  .mc-photo img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position:center top;
+    display:block;
   }
   .mc-photo .mcp-ph{ min-height:unset; font-size:56px; }
   .mc-info{
