@@ -118,12 +118,12 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 /* Modal left: photo */
 .mc-photo{width:52%;flex-shrink:0;position:relative;overflow:hidden;
   background:linear-gradient(135deg,#e9d5ff,#ddd6fe);
-  aspect-ratio:1/1;
+  aspect-ratio:3/4;
 }
 .mc-photo img{
   position:absolute;inset:0;
   width:100%;height:100%;
-  object-fit:contain;
+  object-fit:cover;
   object-position:center center;
   display:block;
 }
@@ -219,7 +219,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
   .mc-photo{
     width:100% !important;
     height:auto !important;
-    aspect-ratio:1/1 !important;
+    aspect-ratio:3/4 !important;
     min-height:unset;
     flex-shrink:0;
     position:relative;
@@ -230,7 +230,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
     inset:0 !important;
     width:100% !important;
     height:100% !important;
-    object-fit:contain !important;
+    object-fit:cover !important;
     object-position:center center !important;
     display:block !important;
   }
