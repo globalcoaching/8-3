@@ -117,7 +117,9 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 
 /* Modal left: photo */
 .mc-photo{width:52%;flex-shrink:0;position:relative;overflow:hidden;
-  background:linear-gradient(135deg,#e9d5ff,#ddd6fe);}
+  background:linear-gradient(135deg,#e9d5ff,#ddd6fe);
+  aspect-ratio:1/1;
+}
 .mc-photo img{
   position:absolute;inset:0;
   width:100%;height:100%;
@@ -215,8 +217,9 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
   }
   .mc-photo{
     width:100% !important;
-    height:64vw !important;
-    min-height:200px;
+    height:auto !important;
+    aspect-ratio:1/1 !important;
+    min-height:unset;
     flex-shrink:0;
     position:relative;
     overflow:hidden;
