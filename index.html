@@ -150,8 +150,86 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
   transition:background .2s,transform .2s;}
 .mc-close:hover{background:rgba(168,85,247,.25);transform:rotate(90deg);}
 
-/* CONFETTI */
-#confetti{position:fixed;inset:0;pointer-events:none;z-index:6000;}
+/* MODAL SLIDES */
+.mc-slides{
+  display:flex;
+  width:200%;
+  transition:transform .4s cubic-bezier(.4,0,.2,1);
+  height:100%;
+}
+.mc-slide{
+  width:50%;
+  flex-shrink:0;
+  display:flex;
+  height:100%;
+}
+
+/* Slide dots */
+.mc-dots{
+  position:absolute;bottom:12px;left:50%;transform:translateX(-50%);
+  display:flex;gap:6px;z-index:10;
+}
+.mc-dot{
+  width:7px;height:7px;border-radius:50%;
+  background:rgba(168,85,247,.25);
+  transition:background .3s, transform .3s;
+  cursor:pointer;
+}
+.mc-dot.active{background:#a855f7;transform:scale(1.3);}
+
+/* Swipe hint arrow */
+.swipe-hint{
+  position:absolute;right:10px;top:50%;transform:translateY(-50%);
+  font-size:18px;opacity:0.4;pointer-events:none;
+  animation:nudge 2s ease-in-out 1.5s 3 forwards;
+}
+@keyframes nudge{
+  0%,100%{transform:translateY(-50%) translateX(0);}
+  50%{transform:translateY(-50%) translateX(5px);}
+}
+
+/* Slide 2 — Quote */
+.mc-quote-slide{
+  flex:1;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:32px 28px;
+  background:linear-gradient(145deg,#0f0a1e,#1e0a3c);
+  position:relative;overflow:hidden;gap:20px;
+  text-align:center;
+}
+.mc-quote-slide::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 30% 40%,rgba(168,85,247,.2) 0%,transparent 60%),
+    radial-gradient(ellipse at 70% 70%,rgba(236,72,153,.15) 0%,transparent 60%);
+}
+.quote-icon{font-size:36px;position:relative;z-index:1;}
+.quote-label{
+  font-size:10px;letter-spacing:4px;text-transform:uppercase;
+  color:rgba(192,132,252,.5);position:relative;z-index:1;
+  font-weight:600;
+}
+.quote-text{
+  font-family:'Be Vietnam Pro',sans-serif;
+  font-size:clamp(14px,1.3vw,17px);
+  color:#e2d9f3;line-height:1.8;
+  font-style:italic;font-weight:400;
+  position:relative;z-index:1;
+  max-width:340px;
+}
+.quote-text::before{content:'"';font-size:48px;color:rgba(168,85,247,.3);
+  line-height:0;vertical-align:-16px;margin-right:4px;}
+.quote-text::after{content:'"';font-size:48px;color:rgba(168,85,247,.3);
+  line-height:0;vertical-align:-16px;margin-left:4px;}
+.quote-name{
+  font-family:'Dancing Script',cursive;
+  font-size:20px;font-weight:700;
+  color:#c084fc;position:relative;z-index:1;
+}
+/* Stars in quote slide */
+.q-star{position:absolute;border-radius:50%;background:#fff;pointer-events:none;
+  animation:twinkle var(--d,2s) ease-in-out infinite var(--dl,0s);}
+@keyframes twinkle{0%,100%{opacity:.1;}50%{opacity:.7;}}
 
 /* DONE */
 #done{display:none;position:fixed;inset:0;z-index:7000;
@@ -249,6 +327,11 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
   .mc-fl{ font-size:20px; margin-top:0; }
   .mc-date{ font-size:10px; }
 
+  .mc-quote-slide{ padding:20px 20px 32px; gap:14px; }
+  .quote-text{ font-size:13px; line-height:1.7; }
+  .quote-icon{ font-size:28px; }
+  .mc-dots{ bottom:8px; }
+
   /* Hint */
   #hint{ font-size:10px; padding:8px 16px; bottom:14px; }
 }
@@ -289,19 +372,44 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 
 <!-- MODAL -->
 <div id="modal">
-  <div class="mc">
-    <div class="mc-photo" id="mc-photo">
-      <div class="mcp-ph" id="mcp-ph">🌸</div>
-      <img id="mcp-img" src="" alt="" style="display:none"/>
+  <div class="mc" style="position:relative;overflow:hidden;">
+    <div class="mc-slides" id="mc-slides">
+
+      <!-- Slide 1: ảnh + lời chúc -->
+      <div class="mc-slide">
+        <div class="mc-photo" id="mc-photo">
+          <div class="mcp-ph" id="mcp-ph">🌸</div>
+          <img id="mcp-img" src="" alt="" style="display:none"/>
+        </div>
+        <div class="mc-info">
+          <button class="mc-close" id="mc-close">✕</button>
+          <p class="mc-date">Happy 8/3 · 2025</p>
+          <h2 class="mc-name" id="mc-name"></h2>
+          <div class="mc-div"></div>
+          <p class="mc-msg" id="mc-msg"></p>
+          <div class="mc-fl" id="mc-fl">🌸</div>
+        </div>
+      </div>
+
+      <!-- Slide 2: quote cá nhân -->
+      <div class="mc-slide">
+        <div class="mc-quote-slide" id="mc-quote-slide">
+          <div class="quote-label">✦ Dành riêng cho bạn ✦</div>
+          <div class="quote-icon" id="q-emoji">🌸</div>
+          <p class="quote-text" id="q-text"></p>
+          <p class="quote-name" id="q-name"></p>
+        </div>
+      </div>
+
     </div>
-    <div class="mc-info">
-      <button class="mc-close" id="mc-close">✕</button>
-      <p class="mc-date">Happy 8/3 · 2025</p>
-      <h2 class="mc-name" id="mc-name"></h2>
-      <div class="mc-div"></div>
-      <p class="mc-msg" id="mc-msg"></p>
-      <div class="mc-fl" id="mc-fl">🌸</div>
+
+    <!-- Dots -->
+    <div class="mc-dots">
+      <div class="mc-dot active" onclick="goSlide(0)"></div>
+      <div class="mc-dot" onclick="goSlide(1)"></div>
     </div>
+    <!-- Swipe hint (chỉ hiện ở slide 1) -->
+    <div class="swipe-hint" id="swipe-hint">›</div>
   </div>
 </div>
 
@@ -324,33 +432,33 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 const TEST_PHOTO = "photos/Vu.JPG"; // ← ảnh test dùng chung
 
 const GIRLS = [
-  { name:"Linh",   photo:TEST_PHOTO, msg:"Nụ cười của Linh làm sáng cả team! ☀️",    emoji:"🌸", zodiac:"♓ Song Ngư"    },
-  { name:"Hương",  photo:TEST_PHOTO, msg:"Dịu dàng và ấm áp vô cùng 🌸",             emoji:"🌺", zodiac:"♉ Kim Ngưu"    },
-  { name:"Ngân",   photo:TEST_PHOTO, msg:"Năng lượng tích cực số 1! ⚡",              emoji:"✨", zodiac:"♊ Song Tử"     },
-  { name:"Thảo",   photo:TEST_PHOTO, msg:"Luôn truyền cảm hứng cho mọi người 🎨",    emoji:"🌻", zodiac:"♍ Xử Nữ"      },
-  { name:"Vy",     photo:TEST_PHOTO, msg:"Đáng yêu nhất team không cần bàn cãi 🐣",  emoji:"🦋", zodiac:"♋ Cự Giải"    },
-  { name:"Phương", photo:TEST_PHOTO, msg:"Tài năng & xinh đẹp tuyệt vời 👑",         emoji:"🌷", zodiac:"♌ Sư Tử"      },
-  { name:"Trang",  photo:TEST_PHOTO, msg:"Tiếng cười vang nhất hành lang 😄",         emoji:"🎀", zodiac:"♎ Thiên Bình"  },
-  { name:"Mai",    photo:TEST_PHOTO, msg:"Chăm chỉ và ngọt ngào như tên 🌺",         emoji:"🌹", zodiac:"♈ Bạch Dương"  },
-  { name:"Yến",    photo:TEST_PHOTO, msg:"Bay cao nhé, chim én của team! 🕊️",        emoji:"⭐", zodiac:"♑ Ma Kết"      },
-  { name:"Lan",    photo:TEST_PHOTO, msg:"Thơm ngát như hoa Lan 🌷",                 emoji:"🌸", zodiac:"♒ Bảo Bình"   },
-  { name:"Hà",     photo:TEST_PHOTO, msg:"Mạnh mẽ và rạng rỡ mỗi ngày 💪",          emoji:"💫", zodiac:"♏ Bọ Cạp"     },
-  { name:"Dung",   photo:TEST_PHOTO, msg:"Cảm ơn vì luôn ở đây 🤍",                 emoji:"🤍", zodiac:"♍ Xử Nữ"      },
-  { name:"Quỳnh",  photo:TEST_PHOTO, msg:"Cá tính riêng không ai sánh được 💫",      emoji:"🌙", zodiac:"♊ Song Tử"     },
-  { name:"Nhung",  photo:TEST_PHOTO, msg:"Ấm áp như ánh nắng ban mai ☀️",            emoji:"☀️", zodiac:"♌ Sư Tử"      },
-  { name:"Trinh",  photo:TEST_PHOTO, msg:"Giỏi giang hết phần người khác rồi! 🚀",   emoji:"🚀", zodiac:"♈ Bạch Dương"  },
-  { name:"Châu",   photo:TEST_PHOTO, msg:"Lấp lánh như ngọc trai 🦪",               emoji:"💎", zodiac:"♋ Cự Giải"    },
-  { name:"Nga",    photo:TEST_PHOTO, msg:"Ánh sáng và sức mạnh của team 💡",         emoji:"💡", zodiac:"♐ Nhân Mã"    },
-  { name:"Thu",    photo:TEST_PHOTO, msg:"Mùa thu đẹp như chính bạn 🍂",             emoji:"🍀", zodiac:"♎ Thiên Bình"  },
-  { name:"Nhi",    photo:TEST_PHOTO, msg:"Bé nhỏ mà tinh thần to lắm đó! ✨",        emoji:"🌟", zodiac:"♉ Kim Ngưu"    },
-  { name:"Diễm",   photo:TEST_PHOTO, msg:"Diễm lệ như tên, không cần nói thêm 🌹",   emoji:"🌹", zodiac:"♓ Song Ngư"    },
-  { name:"Hiền",   photo:TEST_PHOTO, msg:"Hiền lành và đáng tin nhất team 💙",        emoji:"💙", zodiac:"♑ Ma Kết"      },
-  { name:"Trúc",   photo:TEST_PHOTO, msg:"Vững chãi và thẳng thắn như tre 🎋",       emoji:"🎋", zodiac:"♏ Bọ Cạp"     },
-  { name:"Loan",   photo:TEST_PHOTO, msg:"Luôn tươi cười dù khó khăn 🌻",            emoji:"🌻", zodiac:"♒ Bảo Bình"   },
-  { name:"Tuyết",  photo:TEST_PHOTO, msg:"Tinh khiết và rạng rỡ 🤍",                emoji:"❄️", zodiac:"♐ Nhân Mã"    },
-  { name:"Bình",   photo:TEST_PHOTO, msg:"Bình yên và ổn định cho cả nhóm 🌊",       emoji:"🌊", zodiac:"♍ Xử Nữ"      },
-  { name:"Chi",    photo:TEST_PHOTO, msg:"Khéo léo và tinh tế từng chi tiết nhỏ 🎀",  emoji:"🎀", zodiac:"♊ Song Tử"     },
-  { name:"Ngọc",   photo:TEST_PHOTO, msg:"Quý giá như ngọc, team may mắn có bạn 💎",  emoji:"💎", zodiac:"♌ Sư Tử"      },
+  { name:"Linh",   photo:TEST_PHOTO, msg:"Nụ cười của Linh làm sáng cả team! ☀️",    emoji:"🌸", zodiac:"♓ Song Ngư",   quote:"Bạn không cần phải hoàn hảo để trở nên đáng yêu — Linh đã chứng minh điều đó mỗi ngày." },
+  { name:"Hương",  photo:TEST_PHOTO, msg:"Dịu dàng và ấm áp vô cùng 🌸",             emoji:"🌺", zodiac:"♉ Kim Ngưu",   quote:"Sự dịu dàng của bạn không phải điểm yếu — đó là sức mạnh mà ít ai có được." },
+  { name:"Ngân",   photo:TEST_PHOTO, msg:"Năng lượng tích cực số 1! ⚡",              emoji:"✨", zodiac:"♊ Song Tử",    quote:"Nơi nào có Ngân, nơi đó có tiếng cười. Bạn là ánh sáng của cả nhóm." },
+  { name:"Thảo",   photo:TEST_PHOTO, msg:"Luôn truyền cảm hứng cho mọi người 🎨",    emoji:"🌻", zodiac:"♍ Xử Nữ",     quote:"Người truyền cảm hứng thực sự không cần nói nhiều — họ chỉ cần là chính mình như Thảo." },
+  { name:"Vy",     photo:TEST_PHOTO, msg:"Đáng yêu nhất team không cần bàn cãi 🐣",  emoji:"🦋", zodiac:"♋ Cự Giải",   quote:"Đáng yêu không phải ngẫu nhiên — đó là kết quả của một trái tim trong sáng như Vy." },
+  { name:"Phương", photo:TEST_PHOTO, msg:"Tài năng & xinh đẹp tuyệt vời 👑",         emoji:"🌷", zodiac:"♌ Sư Tử",     quote:"Tài năng mà không kiêu ngạo, xinh đẹp mà vẫn gần gũi — đó chính là Phương." },
+  { name:"Trang",  photo:TEST_PHOTO, msg:"Tiếng cười vang nhất hành lang 😄",         emoji:"🎀", zodiac:"♎ Thiên Bình", quote:"Tiếng cười của bạn là liều thuốc tốt nhất — miễn phí và hiệu quả 100%." },
+  { name:"Mai",    photo:TEST_PHOTO, msg:"Chăm chỉ và ngọt ngào như tên 🌺",         emoji:"🌹", zodiac:"♈ Bạch Dương", quote:"Những người chăm chỉ nhất thường ít nói nhất về điều đó — cảm ơn vì đã luôn cố gắng, Mai." },
+  { name:"Yến",    photo:TEST_PHOTO, msg:"Bay cao nhé, chim én của team! 🕊️",        emoji:"⭐", zodiac:"♑ Ma Kết",     quote:"Chim én nhỏ nhưng biết bay xa nhất. Bạn còn đi được rất rất xa đó, Yến." },
+  { name:"Lan",    photo:TEST_PHOTO, msg:"Thơm ngát như hoa Lan 🌷",                 emoji:"🌸", zodiac:"♒ Bảo Bình",  quote:"Hoa Lan không cần khoe — mùi hương tự nhiên đã nói lên tất cả. Giống Lan vậy đó." },
+  { name:"Hà",     photo:TEST_PHOTO, msg:"Mạnh mẽ và rạng rỡ mỗi ngày 💪",          emoji:"💫", zodiac:"♏ Bọ Cạp",    quote:"Mạnh mẽ không có nghĩa là không bao giờ vấp ngã — mà là đứng dậy đẹp hơn mỗi lần." },
+  { name:"Dung",   photo:TEST_PHOTO, msg:"Cảm ơn vì luôn ở đây 🤍",                 emoji:"🤍", zodiac:"♍ Xử Nữ",     quote:"Có những người bạn không cần gặp mỗi ngày vẫn cảm nhận được sự ấm áp — Dung là vậy." },
+  { name:"Quỳnh",  photo:TEST_PHOTO, msg:"Cá tính riêng không ai sánh được 💫",      emoji:"🌙", zodiac:"♊ Song Tử",    quote:"Đừng bao giờ bớt đi cái cá tính đó — thế giới cần thêm những người như Quỳnh." },
+  { name:"Nhung",  photo:TEST_PHOTO, msg:"Ấm áp như ánh nắng ban mai ☀️",            emoji:"☀️", zodiac:"♌ Sư Tử",     quote:"Bạn không cần làm gì to lớn — chỉ cần hiện diện thôi là đã đủ ấm rồi." },
+  { name:"Trinh",  photo:TEST_PHOTO, msg:"Giỏi giang hết phần người khác rồi! 🚀",   emoji:"🚀", zodiac:"♈ Bạch Dương", quote:"Người giỏi thật sự không lo bị thay thế — vì không ai làm được đúng như Trinh." },
+  { name:"Châu",   photo:TEST_PHOTO, msg:"Lấp lánh như ngọc trai 🦪",               emoji:"💎", zodiac:"♋ Cự Giải",   quote:"Ngọc trai được tạo ra từ những hạt cát — sự vất vả của bạn đang tạo nên điều quý giá." },
+  { name:"Nga",    photo:TEST_PHOTO, msg:"Ánh sáng và sức mạnh của team 💡",         emoji:"💡", zodiac:"♐ Nhân Mã",   quote:"Có những người giữ cả nhóm lại với nhau mà không ai để ý — Nga là người đó." },
+  { name:"Thu",    photo:TEST_PHOTO, msg:"Mùa thu đẹp như chính bạn 🍂",             emoji:"🍀", zodiac:"♎ Thiên Bình", quote:"Mùa thu đẹp vì biết buông — bạn cũng đẹp vì biết cân bằng mọi thứ nhẹ nhàng như vậy." },
+  { name:"Nhi",    photo:TEST_PHOTO, msg:"Bé nhỏ mà tinh thần to lắm đó! ✨",        emoji:"🌟", zodiac:"♉ Kim Ngưu",   quote:"Size nhỏ, năng lượng lớn, trái tim khổng lồ — đó là công thức của Nhi." },
+  { name:"Diễm",   photo:TEST_PHOTO, msg:"Diễm lệ như tên, không cần nói thêm 🌹",   emoji:"🌹", zodiac:"♓ Song Ngư",   quote:"Một số người không cần giới thiệu — tên đã nói lên tất cả. Diễm là một trong số đó." },
+  { name:"Hiền",   photo:TEST_PHOTO, msg:"Hiền lành và đáng tin nhất team 💙",        emoji:"💙", zodiac:"♑ Ma Kết",     quote:"Người hiền thật sự không phải người không có ý kiến — mà là người biết khi nào nên nói." },
+  { name:"Trúc",   photo:TEST_PHOTO, msg:"Vững chãi và thẳng thắn như tre 🎋",       emoji:"🎋", zodiac:"♏ Bọ Cạp",    quote:"Thẳng thắn là món quà hiếm — giữ lấy nó Trúc nhé, thế giới cần nhiều hơn sự thật." },
+  { name:"Loan",   photo:TEST_PHOTO, msg:"Luôn tươi cười dù khó khăn 🌻",            emoji:"🌻", zodiac:"♒ Bảo Bình",  quote:"Nụ cười trong khó khăn không phải giả tạo — đó là dũng cảm. Bạn dũng cảm lắm đó, Loan." },
+  { name:"Tuyết",  photo:TEST_PHOTO, msg:"Tinh khiết và rạng rỡ 🤍",                emoji:"❄️", zodiac:"♐ Nhân Mã",   quote:"Tuyết rơi không ồn ào nhưng phủ trắng cả bầu trời — bạn cũng có sức ảnh hưởng như vậy." },
+  { name:"Bình",   photo:TEST_PHOTO, msg:"Bình yên và ổn định cho cả nhóm 🌊",       emoji:"🌊", zodiac:"♍ Xử Nữ",     quote:"Trong thế giới hỗn loạn, người giữ được bình yên là người mạnh nhất — đó là Bình." },
+  { name:"Chi",    photo:TEST_PHOTO, msg:"Khéo léo và tinh tế từng chi tiết nhỏ 🎀",  emoji:"🎀", zodiac:"♊ Song Tử",    quote:"Sự tinh tế không ai dạy được — hoặc bạn có hoặc không. Chi thì có, và rất nhiều." },
+  { name:"Ngọc",   photo:TEST_PHOTO, msg:"Quý giá như ngọc, team may mắn có bạn 💎",  emoji:"💎", zodiac:"♌ Sư Tử",     quote:"Ngọc thật không sợ lửa — càng qua thử thách bạn càng tỏa sáng hơn, Ngọc ơi." },
 ];
 
 const ROWS = [9, 9, 9];
@@ -439,11 +547,48 @@ ROWS.forEach(count => {
 });
 
 // Modal
-const modal  = document.getElementById('modal');
-const mcImg  = document.getElementById('mcp-img');
-const mcPh   = document.getElementById('mcp-ph');
+const modal   = document.getElementById('modal');
+const mcImg   = document.getElementById('mcp-img');
+const mcPh    = document.getElementById('mcp-ph');
+const mcSlides= document.getElementById('mc-slides');
+const dots    = document.querySelectorAll('.mc-dot');
+let curSlide  = 0;
+
+function goSlide(n) {
+  curSlide = n;
+  mcSlides.style.transform = `translateX(-${n * 50}%)`;
+  dots.forEach((d,i) => d.classList.toggle('active', i === n));
+  document.getElementById('swipe-hint').style.opacity = n === 0 ? '0.4' : '0';
+}
+
+// Swipe support
+let touchStartX = 0, mouseStartX = 0, isDragging = false;
+mcSlides.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, {passive:true});
+mcSlides.addEventListener('touchend',   e => {
+  const dx = e.changedTouches[0].clientX - touchStartX;
+  if (Math.abs(dx) > 40) goSlide(dx < 0 ? 1 : 0);
+});
+mcSlides.addEventListener('mousedown',  e => { mouseStartX = e.clientX; isDragging = true; });
+mcSlides.addEventListener('mouseup',    e => {
+  if (!isDragging) return; isDragging = false;
+  const dx = e.clientX - mouseStartX;
+  if (Math.abs(dx) > 40) goSlide(dx < 0 ? 1 : 0);
+});
+
+// Add stars to quote slide
+const qSlide = document.getElementById('mc-quote-slide');
+for (let i = 0; i < 18; i++) {
+  const s = document.createElement('div'); s.className = 'q-star';
+  const sz = Math.random()*2+1;
+  s.style.cssText = `width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${2+Math.random()*3}s;--dl:${Math.random()*4}s;`;
+  qSlide.appendChild(s);
+}
 
 function openModal(g, cols) {
+  // Reset to slide 1
+  goSlide(0);
+
+  // Slide 1 content
   document.getElementById('mc-name').textContent = g.name;
   document.getElementById('mc-msg').textContent  = g.msg;
   document.getElementById('mc-fl').textContent   = g.emoji || '🌸';
@@ -460,6 +605,11 @@ function openModal(g, cols) {
     mcPh.textContent = g.emoji || '🌸';
   }
 
+  // Slide 2 content
+  document.getElementById('q-text').textContent  = g.quote || '';
+  document.getElementById('q-name').textContent  = '— ' + g.name;
+  document.getElementById('q-emoji').textContent = g.emoji || '🌸';
+
   modal.classList.add('show');
   document.body.style.overflow = 'hidden';
 }
@@ -472,7 +622,11 @@ function closeModal() {
 
 document.getElementById('mc-close').onclick = closeModal;
 modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal();
+  if (e.key === 'ArrowRight') goSlide(1);
+  if (e.key === 'ArrowLeft')  goSlide(0);
+});
 
 // Loading
 let p = 0;
